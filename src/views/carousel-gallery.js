@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import React from 'react';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -22,23 +22,25 @@ const images = [
 export default function CarouselGallery(props) {  
   const { options } = props  
   return (
-    <Container
-      sx={{
-        paddingLeft: {          
-          xs: 0,
-          lg: '24px',
-        },
-        paddingRight: {
-          xs: 0,
-          lg: '24px',
-        },
-      }}
-    >
-      <ImageGallery 
-        items={images}
-        lazyLoad={true}
-        {...options}
-      />
-    </Container>
+    <Box component="section" sx={{mt: 3, mb: 3}}>
+      <Container
+        sx={{
+          paddingLeft: {          
+            xs: 0,
+            lg: '24px',
+          },
+          paddingRight: {
+            xs: 0,
+            lg: '24px',
+          },
+        }}
+      >
+        <ImageGallery 
+          items={images}
+          lazyLoad={true}
+          {...options}
+        />
+      </Container>
+    </Box>
   );
 }

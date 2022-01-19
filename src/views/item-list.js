@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import MediaCard from 'src/components/card';
 
 const listing_data = [
@@ -25,11 +25,13 @@ const listing_data = [
 
 export default function ItemList() {
   return (
-    <Container>
-      <Typography variant="h4">Listing</Typography>
-      <Grid container spacing={{ xs: 12, md: 4 }}>
-        <MediaCard data={listing_data} />
-      </Grid>
-    </Container>
+    <Box component="section" sx={{mt: 3, mb: 3}}>
+      <Container>
+        <Typography variant="h4">Listing</Typography>
+        <Grid container spacing={2}>
+          <MediaCard data={listing_data} />
+        </Grid>
+      </Container>
+    </Box>
   );
 }
