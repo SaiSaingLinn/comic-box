@@ -22,7 +22,19 @@ const images = [
 export default function CarouselGallery(props) {  
   const { options } = props  
   return (
-    <Box component="section" sx={{mt: 3, mb: 3}}>
+    <Box 
+      component="section" 
+      sx={{
+        marginTop: {          
+          xs: 0,
+          lg: '24px',
+        },
+        marginBottom: {
+          xs: 0,
+          lg: '24px',
+        },
+      }}
+    >
       <Container
         sx={{
           paddingLeft: {          

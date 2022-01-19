@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types';
 import { styled, alpha } from '@mui/material/styles';
 import { 
@@ -11,8 +12,12 @@ import {
   AppBar, 
   Toolbar, 
   Typography,
-  Container } from '@mui/material';
-import { Search, Notifications } from '@mui/icons-material';
+  Container,
+  Menu,
+  MenuItem } from '@mui/material';
+import { Search, Notifications, Translate } from '@mui/icons-material';
+import { translation } from 'store/actions'
+import { my, en } from 'src/locales'
 
 const SearchWrapper = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -82,6 +87,68 @@ ElevationScroll.propTypes = {
 };
 
 export default function ElevateAppBar(props) {
+  const { langData, langStore } = useSelector(state => state.translate)
+  const dispatch = useDispatch()
+
+  // handle language change
+  const languagesKey = [
+    {
+      lang: 'English',
+      code: 'en',
+    },
+    {
+      lang: 'မြန်မာ',
+      code: 'my',
+    }
+  ]
+
+  const handleLangChange = language => {
+    setAnchorEl(null);
+    dispatch(translation.setLangStore('LANG_CODE_OBJ', language))
+  }
+
+  useEffect(() => {
+    const translation_data = langStore?.code === 'en' ? en : my
+    dispatch(translation.getLangData('GET_TRANSLATION_OBJ', translation_data))
+  }, [dispatch, langStore?.code])
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleLanguageChange = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = 'primary-search-account-menu';
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      {
+        languagesKey?.map((x, i) => 
+          <MenuItem key={i} onClick={() => handleLangChange(x)}>{x?.lang}</MenuItem>
+        )
+      }
+    </Menu>
+  );
+  // end language change
+
   return (                    
     <Box sx={{ flexGrow: 1 }}>
       <CssBaseline />
@@ -116,12 +183,24 @@ export default function ElevateAppBar(props) {
                     <Notifications />
                   </Badge>
                 </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="change language"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleLanguageChange}
+                  color="inherit"
+                >
+                  <Translate />
+                </IconButton>
               </Box>
             </Toolbar>
           </Container>
         </AppBar>
       </ElevationScroll>
       <Toolbar />
+      {renderMenu}
     </Box>
   );
 }

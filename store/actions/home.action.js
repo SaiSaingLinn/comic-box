@@ -1,6 +1,6 @@
 import * as types from 'store/types'
 import serviceController, { routes } from 'controller'
-import { ToDoError, ToDoRequest, ToDoSuccess } from 'actions/typehandle.action'
+import { ToDoError, ToDoRequest, ToDoSuccess } from '../actions/typehandle.action'
 
 const getHome = (lang) => async dispatch => {
   dispatch(ToDoRequest(types.GET_HOME_REQUEST))

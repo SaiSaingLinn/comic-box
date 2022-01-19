@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useSelector } from "react-redux";
 import { Box, Container, Grid, Typography } from '@mui/material';
 import MediaCard from 'src/components/card';
 
@@ -24,10 +25,11 @@ const listing_data = [
 ]
 
 export default function ItemList() {
+  const { langData } = useSelector(state => state.translate)
   return (
     <Box component="section" sx={{mt: 3, mb: 3}}>
       <Container>
-        <Typography variant="h4">Listing</Typography>
+        <Typography variant="h5" mb={1}>{langData?.popular}</Typography>
         <Grid container spacing={2}>
           <MediaCard data={listing_data} />
         </Grid>
