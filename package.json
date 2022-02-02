@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-container",
+  "name": "Comic Box",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,24 +1,24 @@
 export default {
-  title: 'NextJs Container',
-  description: 'NextJs Container is a container for NextJs frontend',
-  keywords: 'NextJs Container',
+  title: 'Comic Box',
+  description: 'COMIC BOX ဆိုတာ ကိုယ်ဖတ်ချင်တဲ့ COMIC တွေကို တစ်နေရာတည်းမှာ အကောင်းဆုံးနဲ့ အမြန်ဆုံး၊ အဆင်အပြေဆုံး ဖတ်လို့ရမယ့် Platform တစ်ခုပါပဲ။',
+  keywords: 'Comic Box, Comic Book in Myanmar, Comic Book online, Comic Book',
   openGraph: {
-    title: 'NextJs Container',
-    description: 'NextJs Container is a container for NextJs frontend',
+    title: 'Comic Box',
+    description: 'COMIC BOX ဆိုတာ ကိုယ်ဖတ်ချင်တဲ့ COMIC တွေကို တစ်နေရာတည်းမှာ အကောင်းဆုံးနဲ့ အမြန်ဆုံး၊ အဆင်အပြေဆုံး ဖတ်လို့ရမယ့် Platform တစ်ခုပါပဲ။',
     type: 'website',
     locale: 'en_IE',
     url: '',
-    site_name: 'NextJs Container',
+    site_name: 'Comic Box',
     images: [
       {
         url: '',
-        alt: 'NextJs Container'
+        alt: 'Comic Box'
       }
     ],
   },
   twitter: {
-    handle: '@NextJs Container',
-    site: '@NextJs Container',
+    handle: '@Comic Box',
+    site: '@Comic Box',
     cardType: 'summary_large_image',
   }
 };
