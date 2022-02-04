@@ -1,5 +1,5 @@
 {
-  "name": "Comic Box",
+  "name": "comic-box",
   "private": true,
   "scripts": {
     "dev": "next dev",

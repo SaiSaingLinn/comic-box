@@ -22,6 +22,24 @@ const listing_data = [
     price: '$300',
     image: 'https://picsum.photos/id/1019/1000/600/',
   },
+  {
+    id: 4,
+    title: 'Item 1',
+    price: '$100',
+    image: 'https://picsum.photos/id/1018/1000/600/',
+  },
+  {
+    id: 5,
+    title: 'Item 2',
+    price: '$200',
+    image: 'https://picsum.photos/id/1015/1000/600/',
+  },
+  {
+    id: 6,
+    title: 'Item 3',
+    price: '$300',
+    image: 'https://picsum.photos/id/1019/1000/600/',
+  },
 ]
 
 export default function ItemList() {

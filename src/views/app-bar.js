@@ -10,9 +10,30 @@ import {
   AppBar, 
   Toolbar, 
   Typography,
-  Container } from '@mui/material';
-import { Search } from '@mui/icons-material';
+  Container,
+  Menu,
+  MenuItem,
+  Button
+} from '@mui/material';
+import { Search, Menu as MenuIcon } from '@mui/icons-material';
 import Link from 'next/link';
+
+const LinkWrapper = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  '& a': {
+    paddingRight: theme.spacing(5),
+    textDecoration: 'none',
+    color: theme.palette.text.main,
+    '&:hover': {
+      color: '#FFF',
+      transition: 'all .2s'
+    },
+    '&:last-child': {
+      paddingRight: 0,
+    },
+  },
+}));
 
 const SearchWrapper = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -81,7 +102,28 @@ ElevationScroll.propTypes = {
   window: PropTypes.func,
 };
 
+const pages = ['Home', 'About Us', 'Request Comics', 'Feedback'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 export default function ElevateAppBar(props) {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (                    
     <Box sx={{ flexGrow: 1 }}>
       <CssBaseline />
@@ -93,25 +135,115 @@ export default function ElevateAppBar(props) {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                sx={{ mr: 9, display: { xs: 'none', md: 'flex' } }}
               >
                 <Link href="/" passHref>
-                  <a className="logo-wrap desktop-logo">
+                  <a>
                     <img src="/comic-box-logo.svg" alt="Comic Box logo" style={{display: 'block'}} />
                   </a>
                 </Link>
               </Typography>
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                   size="large"
-                  edge="end"
-                  aria-label="search"
-                  sx={{
-                    color: '#FFFFFF',
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  sx={{ color: '#FFFFFF', padding: '12px 0' }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
                   }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  {pages.map((page) => (
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>              
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: 'flex', md: 'none' } }}
+              >
+                <Link href="/" passHref>
+                  <a>
+                    <img src="/comic-box-logo.svg" alt="Comic Box logo" style={{display: 'block'}} />
+                  </a>
+                </Link>
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, }}>
+                <LinkWrapper>
+                  {pages.map((page) => (
+                    <Link key={page} href={`/${page.toLowerCase()}`} passHref>
+                      <a>
+                        <Typography 
+                          noWrap 
+                          component="span"
+                          onClick={handleCloseNavMenu}
+                          sx={{ my: 2, display: 'block' }}
+                        >
+                          {page}
+                        </Typography>
+                      </a>
+                    </Link>
+                  ))}
+                </LinkWrapper>
+              </Box>
+              <Box sx={{ display: 'flex' }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  sx={{ color: '#FFFFFF', padding: '12px 0' }}
                 >
                   <Search />
                 </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  {pages.map((page) => (
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
               </Box>
             </Toolbar>
           </Container>

@@ -6,16 +6,24 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const images = [
   {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
+    original: '/comic4.jpg',
+    thumbnail: '/comic4.jpg',
   },
   {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
+    original: '/comic1.png',
+    thumbnail: '/comic1.png',
   },
   {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
+    original: '/comic2.png',
+    thumbnail: '/comic2.png',
+  },
+  {
+    original: '/comic3.jpg',
+    thumbnail: '/comic3.jpg',
+  },
+  {
+    original: '/comic5.jpg',
+    thumbnail: '/comic5.jpg',
   },
 ];
 
