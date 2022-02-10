@@ -5,6 +5,8 @@ import Head from 'next/head'
 import Router from 'next/router'
 import nProgress from "nprogress";
 import 'nprogress/nprogress.css';
+import 'slick-carousel/slick/slick-theme.css'
+import 'slick-carousel/slick/slick.css'
 
 const Layout = ({ children }, showAfterMs = 250, options = { minimum: 0.01, speed: 500 }) => {
   const timer = useRef(null);

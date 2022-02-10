@@ -1,10 +1,11 @@
 import React from 'react'
-import CarouselGallery from 'src/views/carousel-gallery';
 import ItemList from 'src/views/item-list';
+import HomeBanner from 'src/views/banner-slick-slider';
 
 export default function Home(){
   return (
     <>
+      <HomeBanner />
       <ItemList />
     </>
   );
