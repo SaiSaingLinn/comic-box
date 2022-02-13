@@ -4,7 +4,7 @@ import { red } from '@mui/material/colors';
 // Create a theme instance.
 let theme = createTheme({
   typography: {
-    fontFamily: 'SatoshiMedium, Arial',
+    fontFamily: 'Manrope, sans-serif',
   },
   palette: {
     primary: {
@@ -65,6 +65,15 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          borderRadius: '0px',
+          padding: '0px',
+          margin: '0px',
+        },
+      },
+    },    
   },
 });
 
