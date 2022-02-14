@@ -19,10 +19,21 @@ import {
   TextField,
   Autocomplete,
   InputAdornment,
+  SwipeableDrawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
-import { Search, Menu as MenuIcon, Close, ForkRight } from '@mui/icons-material';
+import { Search, Menu as MenuIcon, Close, ForkRight, Coffee } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import theme from 'src/themes/theme';
 
 const LinkWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -31,9 +42,10 @@ const LinkWrapper = styled('div')(({ theme }) => ({
     paddingRight: theme.spacing(5),
     textDecoration: 'none',
     color: theme.palette.text.main,
+    transition: 'ease-in-out .2s',
     '&:hover': {
       color: '#FFF',
-      transition: 'all .2s'
+      // transition: 'all .2s'
     },
     '&:last-child': {
       paddingRight: 0,
@@ -47,10 +59,12 @@ const SearchWrapper = styled('div')(({ theme }) => ({
   left: 0,
   width: '100%',
   transform: 'translateY(-50%)',
+  height: '100%',
   '.MuiTextField-root': {
     '.MuiOutlinedInput-root': {
       color: '#FFF',
       padding: '5px 9px',
+      height: '100%',
       '.MuiInputAdornment-root': {
         color: '#8C8C96',
       },
@@ -140,30 +154,99 @@ ElevationScroll.propTypes = {
 };
 
 const pages = ['Home', 'About Us', 'Request Comics', 'Feedback'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export default function ElevateAppBar(props) {
   const dispatch = useDispatch();
   const { recentData } = useSelector(state => state.recent);
-
   const router = useRouter();
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  // handle feedback dialog 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  // handle feedback dialog end
+
+  // drawer 
+  const [state, setState] = useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const list = (anchor) => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <Box>
+        <IconButton 
+          onClick={toggleDrawer(anchor, false)}
+          sx={{
+            color: '#FFF',
+          }}
+        >
+          <Close />
+        </IconButton>
+      </Box>
+      <List>
+        {/* {pages.map((text) => (
+          <ListItem button key={text} sx={{textDecoration: 'none'}}>
+            <Link href="/" passHref>
+              <a style={{textDecoration: 'none'}}>
+                <ListItemText primary={text} sx={{color: '#FFF', textDecoration: 'none'}}/>
+              </a>
+            </Link>
+          </ListItem>
+        ))} */}
+        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+          <Link href="/" passHref>
+            <a style={{textDecoration: 'none'}}>
+              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>Home</Typography>
+            </a>
+          </Link>
+        </ListItem>
+        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+          <Link href="/" passHref>
+            <a style={{textDecoration: 'none'}}>
+              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>About Us</Typography>
+            </a>
+          </Link>
+        </ListItem>
+        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+          <Link href="/" passHref>
+            <a style={{textDecoration: 'none'}}>
+              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>Request Comics</Typography>
+            </a>
+          </Link>
+        </ListItem>
+        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+          <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}} onClick={handleClickOpen}>Feedback</Typography>
+        </ListItem>
+      </List>
+    </Box>
+  );
+  // drawer end 
 
   // handle search 
   let textInput = useRef(null);
@@ -219,6 +302,7 @@ export default function ElevateAppBar(props) {
                 }
               }
             >
+              {/* desktop logo */}
               <Typography
                 variant="h6"
                 noWrap
@@ -231,42 +315,31 @@ export default function ElevateAppBar(props) {
                   </a>
                 </Link>
               </Typography>
+              {/* end desktop logo */}
+              {/* mobile menu  */}
               <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
+                  onClick={toggleDrawer('left', true)}
                   sx={{ color: '#FFFFFF', padding: '12px 0' }}
                 >
                   <MenuIcon />
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: 'block', md: 'none' },
-                  }}
+                <SwipeableDrawer
+                  anchor={'left'}
+                  open={state['left']}
+                  onClose={toggleDrawer('left', false)}
+                  onOpen={toggleDrawer('left', true)}
+                  disableDiscovery={true}
                 >
-                  {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>              
+                  {list('left')}
+                </SwipeableDrawer>
+              </Box>
+              {/* end mobile menu */}
+              {/* mobile logo */}
               <Typography
                 variant="h6"
                 noWrap
@@ -279,57 +352,79 @@ export default function ElevateAppBar(props) {
                   </a>
                 </Link>
               </Typography>
+              {/* end mobile logo */}
+              {/* desktop menu  */}
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, }}>
                 <LinkWrapper>
-                  {pages.map((page) => (
-                    <Link key={page} href={`/${page.toLowerCase()}`} passHref>
-                      <a>
-                        <Typography 
-                          noWrap 
-                          component="span"
-                          onClick={handleCloseNavMenu}
-                          sx={{ my: 2, display: 'block' }}
-                        >
-                          {page}
-                        </Typography>
-                      </a>
-                    </Link>
-                  ))}
-                </LinkWrapper>
+                  <Link href={`/`} passHref>
+                    <a>
+                      <Typography 
+                        noWrap 
+                        component="span"
+                        sx={{ my: 2, display: 'block' }}
+                      >
+                        Home
+                      </Typography>
+                    </a>
+                  </Link>
+                  <Link href={`/`} passHref>
+                    <a>
+                      <Typography 
+                        noWrap 
+                        component="span"
+                        sx={{ my: 2, display: 'block' }}
+                      >
+                        About Us
+                      </Typography>
+                    </a>
+                  </Link>
+                  <Link href={`/`} passHref>
+                    <a>
+                      <Typography 
+                        noWrap 
+                        component="span"
+                        sx={{ my: 2, display: 'block' }}
+                      >
+                        Request Comics
+                      </Typography>
+                    </a>
+                  </Link>
+                  <Typography 
+                    noWrap 
+                    component="span"
+                    sx={{ my: 2, display: 'block' }}
+                    onClick={handleClickOpen}
+                    sx={(theme) => ({
+                        color: theme.palette.text.main,
+                        cursor: 'pointer',
+                        transition: 'ease-in-out .2s',
+                        '&:hover': {
+                          color: '#FFF',
+                        }
+                      }
+                    )}
+                  >
+                    Feedback
+                  </Typography>
+              </LinkWrapper>
               </Box>
-              <Box sx={{ display: 'flex' }}>
+              {/* end desktop menu */}
+              <Box>
+                <Button 
+                  sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
+                  variant="contained" 
+                  startIcon={<Coffee />}
+                >Coffee ဖိုး
+                </Button>
                 <IconButton
                   onClick={() => handleToggleSearch()}
                   sx={{ color: '#FFFFFF', padding: '12px 0' }}
                 >
                   <Search />
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: 'block', md: 'none' },
-                  }}
-                >
-                  {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
               </Box>
             </Toolbar>
+            {/* search bar */}
             <SearchWrapper style={
               openSearch ? 
               {
@@ -344,8 +439,13 @@ export default function ElevateAppBar(props) {
                 transition: 'ease-in-out .2s',
               }
             }>
-              <Box sx={{position: 'relative'}}>
-                <Autocomplete               
+              <Box sx={{position: 'relative', height: '100%', display: 'flex', justifyContent: 'center'}}>
+                <Autocomplete   
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}            
                   freeSolo
                   id="disabled-options-demo"
                   options={recentData?.length > 0 ? recentData : []}
@@ -399,10 +499,27 @@ export default function ElevateAppBar(props) {
                 </Box>
               </Box>
             </SearchWrapper>
+            {/* end search bar */}
           </Container>
         </AppBar>
       </ElevationScroll>
       <Toolbar />
+      <Dialog open={open} onClose={handleClose} maxWidth={"xs"} fullWidth>
+        <DialogTitle variant="h5" sx={{fontWeight: '800', paddingBottom: '0'}}>Send Us Feedback</DialogTitle>
+        <DialogContent sx={{paddingTop: "20px !important"}}>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            id="outlined-basic" 
+            label="Your feedback here.."
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogContent sx={{display: 'flex', justifyContent: 'flex-end', paddingTop: '0'}}>
+          <Button variant='contained' onClick={handleClose}>အကြံပေးမယ်</Button>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

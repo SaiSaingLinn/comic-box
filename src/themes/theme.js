@@ -69,11 +69,130 @@ theme = createTheme(theme, {
       styleOverrides: {
         paper: {
           borderRadius: '0px',
-          padding: '0px',
-          margin: '0px',
         },
       },
-    },    
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: '#fff',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          background: theme.palette.secondary.main,
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontWeight: '500',
+        },
+        h1: {
+          fontSize: '2.5rem',
+          fontWeight: '800',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '1.5rem',
+          },
+        },
+        h2: {
+          fontSize: '2rem',
+          fontWeight: '800',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '1.5rem',
+          },
+        },
+        h3: {
+          fontSize: '1.5rem',
+          fontWeight: '800',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '1.25rem',
+          },
+        },
+        h4: {
+          fontSize: '1.25rem',
+          fontWeight: '800',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '1rem',
+          },
+        },
+        h5: {
+          fontSize: '1rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+          },
+        },
+        h6: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.5rem',
+          },
+        },
+        paragraph: {
+          fontSize: '1rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+          },
+        },
+        body1: {
+          fontSize: '1rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+          },
+        },
+        body2: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.5rem',
+          },
+        },
+        caption: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.5rem',
+          },
+        },
+        button: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.5rem',
+          },
+        },
+        overline: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.5rem',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          color: '#fff',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          background: '#fff',
+          borderRadius: '0px',
+        },
+      },
+    },
   },
 });
 
