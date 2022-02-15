@@ -30,7 +30,7 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
-import { Search, Menu as MenuIcon, Close, ForkRight, Coffee } from '@mui/icons-material';
+import { Search, Menu as MenuIcon, Close, ForkRight, Coffee, Facebook, AccessTime } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import theme from 'src/themes/theme';
@@ -101,19 +101,6 @@ const SearchWrapper = styled('div')(({ theme }) => ({
       }
     },
   },
-  '.clear-search-wrapper': {
-    position: 'absolute',
-    top: '50%',
-    right: '80px',
-    transform: 'translateY(-50%)',
-    [theme.breakpoints.down('sm')]: {
-      right: '60px',
-    },
-    '.clear-search': {
-      color: '#FFF',
-      cursor: 'pointer',
-    }
-  },
   '.close-icon-wrapper': {
     position: 'absolute',
     top: '50%',
@@ -153,13 +140,12 @@ ElevationScroll.propTypes = {
   window: PropTypes.func,
 };
 
-const pages = ['Home', 'About Us', 'Request Comics', 'Feedback'];
-
 export default function ElevateAppBar(props) {
   const dispatch = useDispatch();
   const { recentData } = useSelector(state => state.recent);
   const router = useRouter();
-
+  // reverse the recent data to show the latest first
+  const recentDataReversed = recentData.slice().reverse();
   // handle feedback dialog 
   const [open, setOpen] = useState(false);
 
@@ -194,7 +180,7 @@ export default function ElevateAppBar(props) {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 250, position: 'relative', height: 'calc(100vh - 40px)' }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -204,46 +190,71 @@ export default function ElevateAppBar(props) {
           onClick={toggleDrawer(anchor, false)}
           sx={{
             color: '#FFF',
+            padding: '16px 24px',
           }}
         >
           <Close />
         </IconButton>
       </Box>
       <List>
-        {/* {pages.map((text) => (
-          <ListItem button key={text} sx={{textDecoration: 'none'}}>
-            <Link href="/" passHref>
-              <a style={{textDecoration: 'none'}}>
-                <ListItemText primary={text} sx={{color: '#FFF', textDecoration: 'none'}}/>
-              </a>
-            </Link>
-          </ListItem>
-        ))} */}
-        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+        <ListItem button sx={{padding: '16px 24px'}}>
           <Link href="/" passHref>
-            <a style={{textDecoration: 'none'}}>
-              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>Home</Typography>
+            <a>
+              <Typography variant="h4" sx={{color: '#FFF'}}>Home</Typography>
             </a>
           </Link>
         </ListItem>
-        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+        <ListItem button sx={{padding: '16px 24px'}}>
           <Link href="/" passHref>
-            <a style={{textDecoration: 'none'}}>
-              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>About Us</Typography>
+            <a>
+              <Typography variant="h4" sx={{color: '#FFF'}}>About Us</Typography>
             </a>
           </Link>
         </ListItem>
-        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
+        <ListItem button sx={{padding: '16px 24px'}}>
           <Link href="/" passHref>
-            <a style={{textDecoration: 'none'}}>
-              <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}}>Request Comics</Typography>
+            <a>
+              <Typography variant="h4" sx={{color: '#FFF'}}>Request Comics</Typography>
             </a>
           </Link>
         </ListItem>
-        <ListItem button sx={{paddingTop: '16px', paddingBottom: '16px'}}>
-          <Typography variant="h4" sx={{color: '#FFF', textDecoration: 'none'}} onClick={handleClickOpen}>Feedback</Typography>
+        <ListItem button sx={{padding: '16px 24px'}}>
+          <Typography variant="h4" sx={{color: '#FFF'}} onClick={handleClickOpen}>Feedback</Typography>
+        </ListItem>
+        <ListItem button sx={{padding: '16px 24px'}}>
+          <Link href="/coffee" passHref>
+            <a>
+              <Button 
+                // sx={{display: 'inline-flex'}}
+                variant="contained" 
+                fullWidth={true}
+                startIcon={<Coffee />}
+              >                      
+                Coffee ဖိုးပေးမယ်
+              </Button>
+            </a>
+          </Link>
         </ListItem>
       </List>
+      <Box sx={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
+        <List>
+          <ListItem button sx={{padding: '8px 24px'}}>
+            <a href="https://www.facebook.com/comic.com.mm/" target="_blank" rel="noopener noreferrer">
+              <Typography variant="p" sx={{fontSize: '14px', color: '#FFF', display: 'flex', alignItems: 'center'}}>Follow Us On <Facebook sx={{width: '18px', height: '18px', marginLeft: '5px'}} /></Typography>
+            </a>
+          </ListItem>
+          <ListItem button sx={{padding: '8px 24px'}}>
+            <a href="mailto:contact@comicbox.net" target="_blank" rel="noopener noreferrer">
+              <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>email: contact@comicbox.net</Typography>
+            </a>
+          </ListItem>
+          <ListItem button sx={{padding: '8px 24px'}}>
+            <a href='tel:09778869369'>
+              <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>Phone: 09778869369</Typography>
+            </a>
+          </ListItem>
+        </List>
+      </Box>
     </Box>
   );
   // drawer end 
@@ -258,25 +269,28 @@ export default function ElevateAppBar(props) {
     }, 100);
     openSearch ? setOpenSearch(false) : setOpenSearch(true)
   }
-
+  
   const [comicName, setComicName] = useState('')
+  
+  const handleSearchData = (value) => {
+    let concatData = [...recentData, value];
+    let newRecentData = [... new Set(concatData)];
+    // if array is more than 5, slice it to 5
+    if (newRecentData.length > 5) {
+      newRecentData = newRecentData.slice(1);
+    }
+    dispatch(recent.setRecentData('GET_RECENT_SEARCH', newRecentData));
+    router.push(`/search/keyword=${encodeURIComponent(value)}`)
+  }
+
   const handleSearch = () => {
     if (comicName !== '') {
-      let concatData = [...recentData, comicName];
-      let newRecentData = [... new Set(concatData)];
-      let reverseRecentData = newRecentData.reverse();
-      // if array is more than 5, slice it to 5
-      if (reverseRecentData.length > 5) {
-        reverseRecentData = reverseRecentData.slice(0, 5);
-      }
-      dispatch(recent.setRecentData('GET_RECENT_SEARCH', reverseRecentData));
-      router.push(`/search/keyword=${encodeURIComponent(comicName)}`)
+      handleSearchData(comicName)
     }
   }
-  
-  const handleClearSearch = (e) => {
-    e.preventDefault()
-    setComicName('')
+
+  const handleAutoSearch = (value) => {
+    handleSearchData(value)
   }
   // handle search end
 
@@ -410,12 +424,17 @@ export default function ElevateAppBar(props) {
               </Box>
               {/* end desktop menu */}
               <Box>
-                <Button 
-                  sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
-                  variant="contained" 
-                  startIcon={<Coffee />}
-                >Coffee ဖိုး
-                </Button>
+                <Link href="/coffee" passHref>
+                  <a>
+                    <Button 
+                      sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
+                      variant="contained" 
+                      startIcon={<Coffee />}
+                    >                      
+                      Coffee ဖိုး
+                    </Button>
+                  </a>
+                </Link>
                 <IconButton
                   onClick={() => handleToggleSearch()}
                   sx={{ color: '#FFFFFF', padding: '12px 0' }}
@@ -448,14 +467,22 @@ export default function ElevateAppBar(props) {
                   }}            
                   freeSolo
                   id="disabled-options-demo"
-                  options={recentData?.length > 0 ? recentData : []}
-                  // getOptionDisabled={(option) =>
-                  //   option === recents[0]
-                  // }
+                  options={recentDataReversed?.length > 0 ? recentDataReversed : []}
                   fullWidth
+                  autoComplete
+                  autoHighlight
+                  blurOnSelect
                   onChange={(event, newValue) => {
-                    setComicName(newValue)
+                    newValue !== "" && newValue !== null && handleAutoSearch(newValue)
                   }}
+                  renderOption={
+                    (props, option) => (
+                      <Box component="li" {...props}>
+                        <AccessTime sx={{color: '#8C8C96', width: '1rem', height: '1rem', marginRight: '10px'}} />
+                        {option}
+                      </Box>
+                    )
+                  }
                   renderInput={params => {
                     return (
                       <>
@@ -481,14 +508,6 @@ export default function ElevateAppBar(props) {
                     );
                   }}
                 />
-                {/* <Box className="clear-search-wrapper">
-                  {
-                    comicName !== '' &&
-                    <span className="clear-search" type="submit" onClick={handleClearSearch}>
-                      Clear
-                    </span>
-                  }
-                </Box> */}
                 <Box className="close-icon-wrapper">
                   <IconButton 
                     className="close-icon"

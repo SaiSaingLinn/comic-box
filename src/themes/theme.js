@@ -182,6 +182,8 @@ theme = createTheme(theme, {
         root: {
           textTransform: 'none',
           color: '#fff',
+          fontSize: '1rem',
+          fontWeight: '800',
         },
       },
     },

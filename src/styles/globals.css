@@ -3,3 +3,8 @@
   src: url('/fonts/Satoshi-Medium.ttf'), url('/fonts/Satoshi-Medium.woff'), url('/fonts/Satoshi-Medium.woff2');
   font-display: swap;
 } */
+
+a {
+  text-decoration: none;
+  width: inherit;
+}
