@@ -223,16 +223,14 @@ export default function ElevateAppBar(props) {
         </ListItem>
         <ListItem button sx={{padding: '16px 24px'}}>
           <Link href="/coffee" passHref>
-            <a>
-              <Button 
-                // sx={{display: 'inline-flex'}}
-                variant="contained" 
-                fullWidth={true}
-                startIcon={<Coffee />}
-              >                      
-                Coffee ဖိုးပေးမယ်
-              </Button>
-            </a>
+            <Button 
+              component="a"
+              variant="contained" 
+              fullWidth={true}
+              startIcon={<Coffee />}
+            >                      
+              Coffee ဖိုးပေးမယ်
+            </Button>
           </Link>
         </ListItem>
       </List>
@@ -425,15 +423,14 @@ export default function ElevateAppBar(props) {
               {/* end desktop menu */}
               <Box>
                 <Link href="/coffee" passHref>
-                  <a>
-                    <Button 
-                      sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
-                      variant="contained" 
-                      startIcon={<Coffee />}
-                    >                      
-                      Coffee ဖိုး
-                    </Button>
-                  </a>
+                  <Button 
+                    sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
+                    variant="contained" 
+                    startIcon={<Coffee />}
+                    component="a"
+                  >                      
+                    Coffee ဖိုး
+                  </Button>
                 </Link>
                 <IconButton
                   onClick={() => handleToggleSearch()}

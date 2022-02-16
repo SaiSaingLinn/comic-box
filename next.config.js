@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['https://picsum.photos'],
+    domains: [],
     loader: 'imgix',
     path: '',
   }

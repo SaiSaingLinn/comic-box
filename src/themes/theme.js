@@ -20,6 +20,12 @@ let theme = createTheme({
       main: '#6E6E78',
       dark: '#1D1D21',
     },
+    light: {
+      main: '#FFFFFF',
+    },
+    red: {
+      main: '#E11900',
+    },
   },
   breakpoints: {
     values: {
@@ -75,7 +81,7 @@ theme = createTheme(theme, {
     MuiButton: {
       styleOverrides: {
         root: {
-          color: '#fff',
+          // color: '#fff',
         },
       },
     },
@@ -121,9 +127,9 @@ theme = createTheme(theme, {
         },
         h5: {
           fontSize: '1rem',
-          fontWeight: '500',
+          fontWeight: '800',
           [theme.breakpoints.down('md')]: {
-            fontSize: '0.75rem',
+            fontSize: '0.875rem',
           },
         },
         h6: {
@@ -148,31 +154,31 @@ theme = createTheme(theme, {
           },
         },
         body2: {
-          fontSize: '0.75rem',
+          fontSize: '0.875rem',
           fontWeight: '500',
           [theme.breakpoints.down('md')]: {
-            fontSize: '0.5rem',
+            fontSize: '0.75rem',
           },
         },
         caption: {
-          fontSize: '0.75rem',
+          fontSize: '0.875rem',
           fontWeight: '500',
           [theme.breakpoints.down('md')]: {
-            fontSize: '0.5rem',
+            fontSize: '0.75rem',
           },
         },
         button: {
-          fontSize: '0.75rem',
+          fontSize: '0.875rem',
           fontWeight: '500',
           [theme.breakpoints.down('md')]: {
-            fontSize: '0.5rem',
+            fontSize: '0.75rem',
           },
         },
         overline: {
-          fontSize: '0.75rem',
+          fontSize: '0.875rem',
           fontWeight: '500',
           [theme.breakpoints.down('md')]: {
-            fontSize: '0.5rem',
+            fontSize: '0.75rem',
           },
         },
       },
@@ -192,6 +198,14 @@ theme = createTheme(theme, {
         paper: {
           background: '#fff',
           borderRadius: '0px',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: '0px',
+          boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.16)',
         },
       },
     },

@@ -10,6 +10,7 @@ import {
   Typography,
   Slide,
   Box,
+  Container,
 } from '@mui/material'
 import {
   Close,
@@ -32,8 +33,8 @@ export default function Detail() {
   };
 
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <Container>
+      <Button variant="contained" onClick={handleClickOpen}>
         Open full-screen dialog
       </Button>
       <Dialog
@@ -162,6 +163,6 @@ export default function Detail() {
         </AppBar>
         <DetailSlider />
       </Dialog>
-    </>
+    </Container>
   );
 }
