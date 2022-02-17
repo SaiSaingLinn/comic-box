@@ -9,20 +9,27 @@ import { styled } from '@mui/material'
 const listing_data = [
   {
     id: 1,
+    title: 'Aquaman: The Becoming',
+    status: 'Latest Update',
+    desc: 'Chapter 14, Chapter 15',
+    image: 'https://c4.wallpaperflare.com/wallpaper/582/765/161/comics-aquaman-wallpaper-preview.jpg'
+  },
+  {
+    id: 2,
     title: 'Justice League',
     status: 'Latest Update',
     desc: 'Chapter 8, Chapter 9',
     image: 'https://vistapointe.net/images/dc-comics-2.jpg',
   },
   {
-    id: 2,
+    id: 3,
     title: 'Batman - Superman (2019-2020)',
     status: 'Completed',
     desc: 'Chapter 10, Chapter 11',
     image: 'https://i.insider.com/5c21315f01c0ea07ad186e92?width=700',
   },
   {
-    id: 3,
+    id: 4,
     title: 'Wonder Woman',
     status: 'Latest Update',
     desc: 'Chapter 12, Chapter 13',

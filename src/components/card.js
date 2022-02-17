@@ -99,7 +99,7 @@ export default function MediaCard(props) {
                           </Typography>
                           <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
                         </Box>
-                        <Typography variant="paragraph" component="p" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
+                        <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
                           <LinesEllipsis
                             text={item?.desc}
                             maxLine='3'

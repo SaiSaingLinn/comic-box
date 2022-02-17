@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 import MediaCard from 'src/components/card';
 
 const listing_data = [
@@ -35,6 +35,38 @@ const listing_data = [
     status: 'New Chapter',
     image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/01/JL_Cv72_07211_DIGITAL_61eb16f4e06f43.36030814.jpg?itok=jYNt5Lo4',
   },
+  {
+    id: 5,
+    title: 'Aquaman: The Becoming',
+    desc: 'Daily Planet သတင်းဌာနကအလုပ်သင်လေး Clark Kent အဖြစ် Superman ရဲ့ ဘဝအစပိုင်းကို ပြထားတယ်။',
+    rating: 3.5,
+    status: 'New Chapter',
+    image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/02/AQMTB_Cv6_00611_DIGITAL_61fac3b33ce686.63542306.jpg?itok=6TdLQHs4',
+  },
+  {
+    id: 6,
+    title: 'Batman: The Knight',
+    desc: 'Daily Planet သတင်းဌာနကအလုပ်သင် လေး Clark Kent အဖြစ် Superman ရဲ့ ဘဝအစပိုင်းကို ပြထားတယ်။',
+    rating: 3.5,
+    status: false,
+    image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/02/BM_TK_Cv2_00211_DIGITAL_61fac3683f83e1.66471464.jpg?itok=2AEC_Brk',
+  },
+  {
+    id: 7,
+    title: 'The Flash',
+    desc: 'Daily Planet သတင်းဌာနကအလုပ်သင် လေး Clark Kent အဖြစ် Superman ရဲ့ ဘဝအစပိုင်းကို ပြထားတယ်။',
+    rating: 4.5,
+    status: false,
+    image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/02/FLS_Cv779_77911_DIGITAL_61fac3fb546c23.93883459.jpg?itok=QjyFoKKp',
+  },
+  {
+    id: 8,
+    title: 'Wonder Woman',
+    desc: 'ခေတ်အဆက်ဆက် လင်းနို့လူသား ရုပ်ရှင်တွေမှာအကောင်းဆုံးဗီလိန်တွေထဲက တစ်ယောက်အဖြစ် ပါနေကျပါပဲ။ဒီကားက Batman ရဲ့ ဘဝအစပိုင်းကို ပြထားတယ်။',
+    rating: 3,
+    status: 'New Chapter',
+    image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/01/WW_Cv784_78411_DIGITAL_61eb17782bd463.76220579.jpg?itok=AgNnOjt-',
+  },
 ]
 
 export default function ItemList() {
@@ -45,6 +77,9 @@ export default function ItemList() {
         <Grid container spacing={2}>
           <MediaCard data={listing_data} />
         </Grid>
+        <Stack sx={{mt: 5, mb: 5}} justifyContent="center" direction="row">
+          <Pagination count={10} color="primary" variant="outlined" shape="rounded" />
+        </Stack>
       </Container>
     </Box>
   );

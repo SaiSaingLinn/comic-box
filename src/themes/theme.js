@@ -209,6 +209,25 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          [theme.breakpoints.down('sm')]: {
+            minWidth: '28px',
+            height: '28px',
+            padding: '0 4px',
+            margin: '0 2px',
+          },
+          '&.Mui-selected': {
+            color: theme.palette.light.main,
+            background: theme.palette.primary.main,
+            '&:hover': {
+              background: theme.palette.primary.main,
+            },
+          },
+        },
+      },
+    },
   },
 });
 
