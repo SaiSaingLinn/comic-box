@@ -14,7 +14,7 @@ import NextLink from 'next/link';
 import theme from 'src/themes/theme';
 import LinesEllipsis from 'react-lines-ellipsis'
 
-export default function MediaCard(props) {
+export default function ChapterCard(props) {
   const { data } = props
   return (
     <>
@@ -23,7 +23,7 @@ export default function MediaCard(props) {
           <Grid item xs={12} md={6} key={item?.id}>
             <Card>
               <CardActionArea>
-                <NextLink href={`/`} passHref>
+                <NextLink href={`/detail/${item?.id}`} passHref>
                   <Link underline="none">
                     <Box
                       sx={{
@@ -82,7 +82,6 @@ export default function MediaCard(props) {
                             ellipsis='...'
                             trimRight
                             basedOn='letters'
-                            component='span'
                           />
                         </Typography>
                         <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
@@ -100,14 +99,13 @@ export default function MediaCard(props) {
                           </Typography>
                           <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
                         </Box>
-                        <Typography variant="paragraph" component="p" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
+                        <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
                           <LinesEllipsis
                             text={item?.desc}
                             maxLine='3'
                             ellipsis='...'
                             trimRight
                             basedOn='letters'
-                            component='span'
                           />
                         </Typography>
                       </CardContent>

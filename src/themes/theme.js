@@ -26,6 +26,10 @@ let theme = createTheme({
     red: {
       main: '#E11900',
     },
+    sky: {
+      light: '#E0F2FE',
+      dark: '#0EA5E9',
+    }
   },
   breakpoints: {
     values: {
