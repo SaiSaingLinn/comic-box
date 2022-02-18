@@ -222,7 +222,7 @@ export default function ElevateAppBar(props) {
           <Typography variant="h4" sx={{color: '#FFF'}} onClick={handleClickOpen}>Feedback</Typography>
         </ListItem>
         <ListItem button sx={{padding: '16px 24px'}}>
-          <Link href="/coffee" passHref>
+          <Link href="/" passHref>
             <Button 
               component="a"
               variant="contained" 
@@ -237,17 +237,17 @@ export default function ElevateAppBar(props) {
       <Box sx={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>
         <List>
           <ListItem button sx={{padding: '8px 24px'}}>
-            <a href="https://www.facebook.com/comic.com.mm/" target="_blank" rel="noopener noreferrer">
+            <a href="/" target="_blank" rel="noopener noreferrer">
               <Typography variant="p" sx={{fontSize: '14px', color: '#FFF', display: 'flex', alignItems: 'center'}}>Follow Us On <Facebook sx={{width: '18px', height: '18px', marginLeft: '5px'}} /></Typography>
             </a>
           </ListItem>
           <ListItem button sx={{padding: '8px 24px'}}>
-            <a href="mailto:contact@comicbox.net" target="_blank" rel="noopener noreferrer">
+            <a href="/" target="_blank" rel="noopener noreferrer">
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>email: contact@comicbox.net</Typography>
             </a>
           </ListItem>
           <ListItem button sx={{padding: '8px 24px'}}>
-            <a href='tel:09778869369'>
+            <a href='/'>
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>Phone: 09778869369</Typography>
             </a>
           </ListItem>
@@ -422,7 +422,7 @@ export default function ElevateAppBar(props) {
               </Box>
               {/* end desktop menu */}
               <Box>
-                <Link href="/coffee" passHref>
+                <Link href="/" passHref>
                   <Button 
                     sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
                     variant="contained" 

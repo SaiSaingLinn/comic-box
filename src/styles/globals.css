@@ -4,6 +4,21 @@
   font-display: swap;
 } */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+    
+html {
+  scroll-behavior: smooth;
+}
+
+main {
+  min-height: calc(100vh - 144px);
+  overflow-x: hidden;
+}
+
 a {
   text-decoration: none;
 }
