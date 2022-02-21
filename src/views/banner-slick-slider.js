@@ -102,11 +102,11 @@ const HomeBanner = (props) => {
     arrows: true,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
     swipeToSlide: true,
     autoplaySpeed: 5000,
     speed: 1000,
-    infinite: false,
+    infinite: true,
     touchThreshold: 50,
     responsive: [
       {

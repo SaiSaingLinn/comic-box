@@ -1,35 +1,39 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { 
-  Grid,
-  Card,
-  CardActionArea,
-  CardContent,
   Typography,
-  Link,
   Box,
   Rating,
   Container,
   Stack,
+  Button,
+  SpeedDialAction,
+  SpeedDial,
+  styled
 } from '@mui/material';
-import NextLink from 'next/link';
 import theme from 'src/themes/theme';
-import LinesEllipsis from 'react-lines-ellipsis'
+import LinesEllipsis from 'react-lines-ellipsis';
 import ShowMoreText from "react-show-more-text";
-import { styled } from '@mui/material';
+import { 
+  Facebook, 
+  PlayCircleOutline, 
+  Share, 
+  FileCopy 
+} from '@mui/icons-material';
 
-const Desc = styled(Box)(({ theme }) => ({
+const Desc = styled("div")(({ theme }) => ({
   '.my-anchor-css-class': {
     color: theme.palette.primary.main,
   },
 }));
 
-export default function DetailInfo(props) {
-  const { item } = props;
+const actions = [
+  { icon: <FileCopy />, name: 'Copy Link' },
+  { icon: <Facebook />, name: 'Facebook' },
+];
 
-  const executeOnClick = () => {
-    console.log('clicked');
-  };
+export default function DetailInfo(props) {
+  const { data, handleClickOpen } = props;
 
   return (
     <Box component="section" sx={{mt: 5, mb: 5}}>
@@ -43,10 +47,10 @@ export default function DetailInfo(props) {
             width: '100%',
           }}
         >                      
-          <Box sx={{width: '30%'}}>
+          <Box sx={{width: {md: '30%', xs: '40%'}}}>
             <Image
-              src={item?.image}
-              alt={item?.title}
+              src={data?.image}
+              alt={data?.title}
               layout="responsive"
               width={160}
               height={240}
@@ -54,16 +58,16 @@ export default function DetailInfo(props) {
           </Box>
           <Box 
             sx={{
-              width: '70%', 
+              width: {md: '70%', xs: '60%'}, 
               paddingTop: '0px',
-              padding: { md: '0 24px', xs: '16px 0'},
+              padding: { md: '0 24px', xs: '0 16px'},
             }}
           >
             {
-              item?.status && (
+              data?.status && (
                 <Box 
                   sx={{
-                    background: item?.status === 'Completed' ? theme.palette.sky.light : theme.palette.red.main,
+                    background: data?.status === 'Completed' ? theme.palette.sky.light : theme.palette.red.main,
                     display: 'inline-block',
                   }}
                   mb={1}
@@ -72,27 +76,27 @@ export default function DetailInfo(props) {
                     variant='caption' 
                     component='p' 
                     sx={{
-                      color: item?.status === 'Completed' ? theme.palette.sky.dark : theme.palette.light.main, 
+                      color: data?.status === 'Completed' ? theme.palette.sky.dark : theme.palette.light.main, 
                       fontWeight: '800',
                       padding: {md: '4px 8px', xs: '3px 6px'},
                     }}
                   >
-                    {item?.status}
+                    {data?.status}
                   </Typography>
                 </Box>
               )
             }
             <Typography gutterBottom variant="h3" component="h1" sx={{color: theme.palette.text.dark, mb: 1}}>                          
               <LinesEllipsis
-                text={item?.title}
-                maxLine='1'
+                text={data?.title}
+                maxLine='3'
                 ellipsis='...'
                 trimRight
                 basedOn='letters'
                 component='span'
               />
             </Typography>
-            <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
+            <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 2}}}>
               <Typography 
                 variant="body2" 
                 color="textSecondary" 
@@ -103,35 +107,132 @@ export default function DetailInfo(props) {
                   color: theme.palette.text.main,                              
                 }}
               >
-                {item?.rating}
+                {data?.rating}
               </Typography>
-              <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
+              <Rating name="half-rating-read" value={data?.rating} precision={0.5} readOnly size="small" />
             </Box>
-            <Desc>
-              <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
-                <ShowMoreText
-                  /* Default options */
-                  lines={4}
-                  more="See more"
-                  less=""
-                  className="content-css"
-                  anchorClass="my-anchor-css-class"
-                  onClick={() => executeOnClick()}
-                  expanded={false}
-                  width={0}
-                  truncatedEndingComponent={"... "}
-                >
-                  {item?.desc}
-                </ShowMoreText>
-              </Typography>
-            </Desc>
-            <Box sx={{mt: {md: 2, xs: 1}}}>
+            <Box sx={{
+                mb: {md: 2, xs: 1},
+                display: {sm: 'block', xs: 'none'},
+              }}>
+              <Desc>
+                <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
+                  <ShowMoreText
+                    /* Default options */
+                    lines={4}
+                    more="See more"
+                    less=""
+                    className="content-css"
+                    anchorClass="my-anchor-css-class"
+                    // onClick={() => executeOnClick()}
+                    expanded={false}
+                    width={0}
+                    truncatedEndingComponent={"... "}
+                  >
+                    {data?.desc}
+                  </ShowMoreText>
+                </Typography>
+              </Desc>
+            </Box>
+            <Box sx={{mb: {md: 3, xs: 2}}}>
+              <Stack direction="row" spacing={2} sx={{mb: {md: 1, xs: 0.5}}}>              
+                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '800', color: theme.palette.text.main, minWidth: {md: '60px', xs: '50px'}}}>Aurthor:</Typography>
+                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '400', color: theme.palette.text.main}}>{data?.aurthor}</Typography>
+              </Stack>
               <Stack direction="row" spacing={2}>              
-                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '800', color: theme.palette.text.main}}>Aurthor:</Typography>
-                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '400', color: theme.palette.text.main}}>{item?.aurthor}</Typography>
+                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '800', color: theme.palette.text.main, minWidth: {md: '60px', xs: '50px'}}}>Artist:</Typography>
+                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '400', color: theme.palette.text.main}}>{data?.artist}</Typography>
+              </Stack>
+            </Box>
+            <Box sx={{
+              mb: {md: 2, xs: 1},
+              display: {sm: 'block', xs: 'none'},
+            }}>
+              <Stack direction="row" spacing={2}>
+                <Button 
+                  variant="contained" 
+                  startIcon={<PlayCircleOutline />}
+                  onClick={() => {
+                    handleClickOpen(1);
+                  }}
+                >                      
+                  အခုဖတ်မယ်
+                </Button>
+                <Box sx={{transform: 'translateZ(0px)', flexGrow: 1 }}>
+                  <SpeedDial
+                    ariaLabel="SpeedDial basic example"
+                    sx={{ position: 'absolute', bottom: 0, left: 0 }}
+                    icon={<Share />}
+                  >
+                    {actions.map((action) => (
+                      <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                        tooltipOpen
+                      />
+                    ))}
+                  </SpeedDial>
+                </Box>
               </Stack>
             </Box>
           </Box>
+        </Box>
+        <Box sx={{
+          mb: {xs: 2},
+          mt: {xs: 2},
+          display: {sm: 'none', xs: 'block'},
+        }}>
+          <Desc>
+            <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
+              <ShowMoreText
+                /* Default options */
+                lines={3}
+                more="See more"
+                less=""
+                className="content-css"
+                anchorClass="my-anchor-css-class"
+                onClick={() => executeOnClick()}
+                expanded={false}
+                width={0}
+                truncatedEndingComponent={"... "}
+              >
+                {data?.desc}
+              </ShowMoreText>
+            </Typography>
+          </Desc>
+        </Box>
+        <Box sx={{
+          display: {sm: 'none', xs: 'block'},
+        }}>
+          <Stack direction="row" spacing={2}>
+            <Button 
+              variant="contained" 
+              startIcon={<PlayCircleOutline />}
+              fullWidth
+              onClick={() => {
+                handleClickOpen(1);
+              }}
+            >                      
+              အခုဖတ်မယ်
+            </Button>
+            <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, width: '100%' }}>
+              <SpeedDial
+                ariaLabel="SpeedDial basic example"
+                sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}
+                icon={<Share />}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                    tooltipOpen
+                  />
+                ))}
+              </SpeedDial>
+            </Box>
+          </Stack>
         </Box>
       </Container>
     </Box>

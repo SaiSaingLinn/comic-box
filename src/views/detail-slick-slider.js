@@ -3,10 +3,27 @@ import { useSelector, useDispatch } from "react-redux"
 import Slider from 'react-slick'
 import { styled } from '@mui/material/styles';
 import {
-  Button,
+  Box,
+  Button, 
+  Typography,
+  SpeedDialAction,
+  SpeedDial,
 } from '@mui/material';
 import Link from 'next/link';
 import { detail } from "store/actions"
+import Image from 'next/image';
+import theme from 'src/themes/theme';
+import { 
+  Coffee, 
+  Share, 
+  Facebook, 
+  FileCopy 
+} from '@mui/icons-material';
+
+const actions = [
+  { icon: <FileCopy />, name: 'Copy Link' },
+  { icon: <Facebook />, name: 'Facebook' },
+];
 
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: '#000',
@@ -16,24 +33,43 @@ const Container = styled('div')(({ theme }) => ({
         '.slick-slide': {
           cursor: 'pointer',
           '&.slick-current': {
-            'img': {
+            '.img-wrap': {
               border: `4px solid ${theme.palette.primary.main}`,
               [theme.breakpoints.down('sm')]: {
                 border: `3px solid ${theme.palette.primary.main}`,
               },
             },
           },
-          'img': {
-            objectFit: 'cover',
+          '.img-wrap': {
             margin: '0 auto',
             width: '100%',
             border: '4px solid transparent',
             height: '72px',
+            position: 'relative',
             [theme.breakpoints.down('sm')]: {
               border: '3px solid transparent',
               height: '40px'
             },
           },
+          // '&.slick-current': {
+          //   'img': {
+          //     border: `4px solid ${theme.palette.primary.main}`,
+          //     [theme.breakpoints.down('sm')]: {
+          //       border: `3px solid ${theme.palette.primary.main}`,
+          //     },
+          //   },
+          // },
+          // 'img': {
+          //   objectFit: 'cover',
+          //   margin: '0 auto',
+          //   width: '100%',
+          //   border: '4px solid transparent',
+          //   height: '72px',
+          //   [theme.breakpoints.down('sm')]: {
+          //     border: '3px solid transparent',
+          //     height: '40px'
+          //   },
+          // },
         },
       },
     },
@@ -71,16 +107,24 @@ const Container = styled('div')(({ theme }) => ({
     '.slick-list': {
       '.slick-track': {
         '.slick-slide': {
-          'img, .coffee-wrap': {
+          '.img-wrap': {
+            position: 'relative', 
             width: '100%',
             maxWidth: '1220px',
             height: 'calc(100vh - 240px)',
-            objectFit: 'contain',
             margin: '10px auto',
           },
+          // '.coffee-wrap': {
+          //   width: '100%',
+          //   maxWidth: '1220px',
+          //   height: 'calc(100vh - 240px)',
+          //   objectFit: 'contain',
+          //   margin: '10px auto',
+          // },
           '.coffee-wrap': {
             display: 'flex',
-            alignItems: 'center',   
+            alignItems: 'center',
+            height: '100%',   
             '.coffee': {
               background: theme.palette.primary.main,
               width: '100%',
@@ -89,6 +133,10 @@ const Container = styled('div')(({ theme }) => ({
               maxWidth: '620px',
               minHeight: '460px',
               padding: '64px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               [theme.breakpoints.down('sm')]: {
                 maxWidth: '312px',
                 minHeight: '336px',
@@ -139,6 +187,7 @@ const Container = styled('div')(({ theme }) => ({
       color: '#FFF',
       fontSize: '14px',
       margin: '12px 0',
+      fontWeight: '800',
       '@media screen and (min-width: 900px)': {
         fontSize: '16px',
         margin: '16px 0',
@@ -252,7 +301,9 @@ const settingsNav = {
   ]
 }
 
-export default function DetailSlider() {
+export default function DetailSlider(props) {
+  const { data } = props;
+  
   const dispatch = useDispatch()
   const { hide_action } = useSelector(state => state.detail)
   
@@ -287,48 +338,76 @@ export default function DetailSlider() {
             {...settingsMain}
           >
             {
-              listing_data?.map((x, i) => (
-                <div key={i} className="img-wrap" onClick={() => handleHideAction()}>
-                  <img src={x?.image} alt="detail-img"/>
+              data?.image?.map((x, i) => (
+                <div key={i} onClick={() => handleHideAction()}>
+                  {/* <img src={x} alt={data?.title} /> */}
+                  <div className='img-wrap'>
+                    <Image src={x} alt={data?.title} layout="fill" objectFit="contain" />
+                  </div>
                 </div>
                 ))
             }
-            <div className="img-wrap" onClick={() => handleHideAction()}>
-              <div className='coffee-wrap'>
-                <div className='coffee'>
-                  <img className='smile-icon' src="/smile.svg" alt="smile icon"/>
-                  <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p>
-                  <div className='btn-wrap'>
-                    <Link href="/coffee" passHref>
-                      <a>
-                        <Button variant='contained'>
+            <div onClick={() => handleHideAction()}>
+              <div className='img-wrap'>
+                <div className='coffee-wrap'>
+                  <div className='coffee'>
+                    <img className='smile-icon' src="/smile.svg" alt="smile icon"/>
+                    <Typography variant='h4' component='h4' sx={{color: '#FFF', mb: 3}}>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</Typography>
+                    {/* <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p> */}
+                    <div className='btn-wrap'>
+                      <Link href={`/`} passHref>
+                        <Button 
+                          variant="contained" 
+                          color="light" 
+                          sx={{
+                            color: theme.palette.secondary.main, 
+                            width: 'fit-content',
+                            display: 'none',
+                            '@media screen and (min-width: 900px)': {
+                              display: 'inline-flex',
+                            }
+                          }} 
+                          size="large"
+                          component="a"
+                          startIcon={<Coffee />}
+                        >
                           Coffee ဖိုးပေးမယ်
                         </Button>
-                      </a>
-                    </Link>
-                    <Link href="/coffee" passHref>
-                      <a>
-                        <Button variant='contained'>
-                          မျှဝေမယ်
-                        </Button>
-                      </a>
-                    </Link>
-                    <Link href="/coffee" passHref>
-                      <a>
-                        <Button variant='contained'>
-                          နောက်တစ်ပိုင်း
-                        </Button>
-                      </a>
-                    </Link>
+                      </Link>
+                      <Box sx={{transform: 'translateZ(0px)', flexGrow: 1 }}>
+                        <SpeedDial
+                          ariaLabel="SpeedDial basic example"
+                          sx={{ position: 'absolute', bottom: 0, left: 0, }}
+                          icon={<Share />}
+                          className="speed-dial-white"
+                        >
+                          {actions.map((action) => (
+                            <SpeedDialAction
+                              key={action.name}
+                              icon={action.icon}
+                              tooltipTitle={action.name}
+                              tooltipOpen
+                            />
+                          ))}
+                        </SpeedDial>
+                      </Box>
+                      <Link href="/coffee" passHref>
+                        <a>
+                          <Button variant='contained'>
+                            နောက်တစ်ပိုင်း
+                          </Button>
+                        </a>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>              
+              </div>         
             </div>
         </Slider>
         <div className="slide-index">
           <p>
             {
-              `( ${(slideIndex + 1) +' '+ 'of' +' '+ (listing_data?.length + 1)} )`
+              `( ${(slideIndex + 1) +' '+ 'of' +' '+ (data?.image?.length + 1)} )`
             }
           </p>
         </div>
@@ -343,9 +422,12 @@ export default function DetailSlider() {
           {...settingsNav}
         >
           {
-            listing_data?.map((x, i) => (
+            data?.image?.map((x, i) => (
               <div key={i}>
-                <img src={x?.image} alt="detail-img" style={{opacity: hide_action ? '0' : '1', transition: 'ease-in-out .2s'}} />
+                {/* <img src={x} alt={data?.title} style={{opacity: hide_action ? '0' : '1', transition: 'ease-in-out .2s'}} /> */}
+                <div className='img-wrap' style={{opacity: hide_action ? '0' : '1', transition: 'ease-in-out .2s'}}>
+                  <Image src={x} alt={data?.title} layout="fill" objectFit="cover" />
+                </div>
               </div>
             ))
           }

@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+import { alpha } from '@mui/material';
 
 // Create a theme instance.
 let theme = createTheme({
@@ -82,13 +83,6 @@ theme = createTheme(theme, {
         },
       },
     },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          // color: '#fff',
-        },
-      },
-    },
     MuiDrawer: {
       styleOverrides: {
         paper: {
@@ -119,7 +113,7 @@ theme = createTheme(theme, {
           fontSize: '1.5rem',
           fontWeight: '800',
           [theme.breakpoints.down('md')]: {
-            fontSize: '1.25rem',
+            fontSize: '1.125rem',
           },
         },
         h4: {
@@ -130,7 +124,7 @@ theme = createTheme(theme, {
           },
         },
         h5: {
-          fontSize: '1rem',
+          fontSize: '1.125rem',
           fontWeight: '800',
           [theme.breakpoints.down('md')]: {
             fontSize: '0.875rem',
@@ -171,13 +165,6 @@ theme = createTheme(theme, {
             fontSize: '0.75rem',
           },
         },
-        button: {
-          fontSize: '0.875rem',
-          fontWeight: '500',
-          [theme.breakpoints.down('md')]: {
-            fontSize: '0.75rem',
-          },
-        },
         overline: {
           fontSize: '0.875rem',
           fontWeight: '500',
@@ -191,9 +178,70 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          color: '#fff',
           fontSize: '1rem',
           fontWeight: '800',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+          },
+        },
+        contained: {
+          color: '#FFFFFF',
+        },
+      },
+    },
+    MuiSpeedDial: {
+      styleOverrides: {
+        root: {
+          '&.speed-dial-white': {
+            '.MuiSpeedDial-fab': {
+              color: '#FFFFFF',
+              border: '1px solid #FFFFFF',
+            },
+          },
+        },
+        fab: {
+          borderRadius: '4px',
+          width: 'initial',
+          height: 'initial',
+          minWidth: '64px',
+          background: 'transparent',
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.5)}`,
+          boxShadow: 'none',
+          color: theme.palette.primary.main,
+          padding: '5px 15px',
+          fontWeight: '800',
+          fontSize: '1rem',
+          transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          '&:hover': {
+            background: alpha(theme.palette.primary.main, 0.04),
+            border: `1px solid ${theme.palette.primary.main}`,
+          },
+          '&:active': {
+            boxShadow: 'none',
+          },
+          '&:after': {
+            content: '"မျှ​ဝေမယ်"',
+          },
+          '.MuiSvgIcon-root': {
+            fontSize: '20px',
+            marginRight: '8px',
+          },
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+            width: '100%',
+            minHeight: 'initial',
+          },
+        },
+      },
+    },
+    MuiSpeedDialAction: {
+      styleOverrides: {
+        staticTooltipLabel: {
+          minWidth: '110px',
+          [theme.breakpoints.down('md')]: {
+            fontSize: '0.75rem',
+            minWidth: '90px',
+          },
         },
       },
     },

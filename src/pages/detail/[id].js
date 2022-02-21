@@ -1,25 +1,6 @@
-import React from 'react'
-import { useSelector, useDispatch } from "react-redux"
-import DetailSlider from 'src/views/detail-slick-slider';
-import {
-  Button,
-  Dialog,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Slide,
-  Box,
-  Container,
-} from '@mui/material'
-import {
-  Close,
-} from '@mui/icons-material';
+import React, { useEffect, useState } from 'react'
 import DetailInfo from 'src/views/detail-info';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import FullDialogSlider from 'src/views/full-dialog-slider';
 
 const detail_data = {
   id: 1,
@@ -29,155 +10,76 @@ const detail_data = {
   status: 'Completed',
   image: 'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/01/DKoS_Cv4_00411_DIGITAL_61eb15ad0488e9.78465565.jpg?itok=G0npqegi',
   aurthor: 'Geoff Johns',
-  artist: 'Geoff Johns',
+  artist: 'Gary Frank',
+  chapters: [
+    {
+      id: 1,
+      title: 'Chapter 1',
+      sub_title: 'First Contact',
+      image: [
+        'https://www.dccomics.com/sites/default/files/styles/comics320x485/public/comic-covers/2022/01/DKoS_Cv4_00411_DIGITAL_61eb15ad0488e9.78465565.jpg?itok=G0npqegi',
+        'https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/Item/975075/Previews/beea3625dd7bbb3c492dfe28aab0fc44._SX1600_QL80_TTD_.jpg',
+        'https://mlpnk72yciwc.i.optimole.com/cqhiHLc.WqA8~2eefa/w:392/h:578/q:75/https://bleedingcool.com/wp-content/uploads/2021/08/dark-knights-4.jpg',
+        'https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/Item/975075/Previews/9513be81216d4970a85274c24d0ffad9._SX1600_QL80_TTD_.jpg',
+        'https://readcomicsonline.ru/uploads/manga/dark-knights-of-steel-2021/chapters/2/17.jpg',
+        'https://www.supermanhomepage.com/clickandbuilds/SupermanHomepage/wp-content/uploads/2021/08/dark-knights-of-steel-preview-3.jpg',
+        'https://www.comicsunearthed.com/wp-content/uploads/2021/11/Batman-Medieval-Robins-header.jpg',
+        'https://static3.srcdn.com/wordpress/wp-content/uploads/2021/08/Dark-Knight-Of-Steel-6.jfif-.jpg?q=50&fit=crop&w=740&h=1057&dpr=1.5',
+        'https://boombabyhome.files.wordpress.com/2021/11/dark-knights-of-steel-1-page-2.jpg',
+        'https://i0.wp.com/batman-news.com/wp-content/uploads/2021/12/Dark-Knights-of-Steel-2-1.png?resize=696%2C382&quality=80&strip=info&ssl=1',
+        'https://i0.wp.com/aiptcomics.com/wp-content/uploads/2021/10/COL09.jpg?ssl=1',
+        'https://752617.smushcdn.com/1328696/wp-content/uploads/2021/11/Dark-Knights-Of-Steel-1-7-scaled.jpg?lossy=1&strip=1&webp=1',
+      ],
+    },
+    {
+      id: 2,
+      title: 'Chapter 2',
+      sub_title: 'The First Encounter',
+      image: [
+        'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2021%2F08%2F12%2FDark-Knights-of-Steel_1-2000.jpg',
+        'https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/Item/975075/Previews/beea3625dd7bbb3c492dfe28aab0fc44._SX1600_QL80_TTD_.jpg',
+        'https://mlpnk72yciwc.i.optimole.com/cqhiHLc.WqA8~2eefa/w:392/h:578/q:75/https://bleedingcool.com/wp-content/uploads/2021/08/dark-knights-4.jpg',
+        'https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/Item/975075/Previews/9513be81216d4970a85274c24d0ffad9._SX1600_QL80_TTD_.jpg',
+        'https://readcomicsonline.ru/uploads/manga/dark-knights-of-steel-2021/chapters/2/17.jpg',
+        'https://www.supermanhomepage.com/clickandbuilds/SupermanHomepage/wp-content/uploads/2021/08/dark-knights-of-steel-preview-3.jpg',
+        'https://www.comicsunearthed.com/wp-content/uploads/2021/11/Batman-Medieval-Robins-header.jpg',
+        'https://static3.srcdn.com/wordpress/wp-content/uploads/2021/08/Dark-Knight-Of-Steel-6.jfif-.jpg?q=50&fit=crop&w=740&h=1057&dpr=1.5',
+        'https://boombabyhome.files.wordpress.com/2021/11/dark-knights-of-steel-1-page-2.jpg',
+        'https://i0.wp.com/batman-news.com/wp-content/uploads/2021/12/Dark-Knights-of-Steel-2-1.png?resize=696%2C382&quality=80&strip=info&ssl=1',
+        'https://i0.wp.com/aiptcomics.com/wp-content/uploads/2021/10/COL09.jpg?ssl=1',
+        'https://752617.smushcdn.com/1328696/wp-content/uploads/2021/11/Dark-Knights-Of-Steel-1-7-scaled.jpg?lossy=1&strip=1&webp=1',
+      ]
+    },
+  ]
 }
 
 export default function Detail() {
-  const [open, setOpen] = React.useState(false);
-  const { hide_action } = useSelector(state => state.detail)
+  const [chapterData, setChapterData] = useState(null)
+  const [state, setState] = useState({
+    open: false,
+    chapter: null,
+  });
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = (id) => {
+    setState({open: true, chapter: id});
   };
   
   const handleClose = () => {
-    setOpen(false);
+    setState({open: false, chapter: null});
   };
+
+  useEffect(() => {
+    let id = state.chapter; 
+    if (id) {
+      let chapter_data = detail_data.chapters.find(chapter => chapter.id === id);
+      setChapterData(chapter_data);
+    }
+  }, [state.chapter, detail_data])
 
   return (
     <>
-      <DetailInfo item={detail_data} />
-      <Container>
-        <Button variant="contained" onClick={handleClickOpen}>
-          Open full-screen dialog
-        </Button>
-        <Dialog
-          fullScreen
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-          sx={{
-            '& .MuiDialog-scrollPaper': {
-              '& .MuiDialog-paperFullScreen': {
-                // overflow: 'hidden',
-                width: "100vw",
-                height: "100%",
-                height: "-webkit-fill-available",
-                backgroundColor: '#000',
-              },
-            },
-          }}
-        >        
-          <AppBar sx={{ 
-            position: 'relative', 
-            background: 'transparent',
-            paddingRight: '22px',
-            paddingLeft: '22px',
-            opacity: hide_action ? '0' : '1',
-            transition: 'ease-in-out .2s',
-            '@media screen and (min-width: 900px)': {
-              paddingRight: '40px',
-              paddingLeft: '40px',
-            }
-          }}>
-            <Toolbar>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                  '@media screen and (min-width: 900px)': {
-                    width: 'calc(100% - 84px)',
-                  }     
-                }}
-              > 
-                <Box 
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleClose}
-                >
-                  <IconButton
-                    edge="start"
-                    color="inherit"
-                    aria-label="close"
-                    sx={{
-                      color: '#FFF',
-                      padding: '0px',
-                      '@media screen and (min-width: 900px)': {
-                        padding: '8px',
-                      }
-                    }}
-                  >
-                    <Close 
-                      sx={{
-                        fontSize: '1rem',
-                        '@media screen and (min-width: 900px)': {
-                          fontSize: '1.5rem',
-                        } 
-                      }}
-                    />
-                  </IconButton>
-                  <Typography 
-                    sx={{ 
-                      ml: 2, 
-                      flex: 1, 
-                      color: '#FFF', 
-                      marginLeft: '6px',
-                      display: 'none',
-                      '@media screen and (min-width: 900px)': {
-                        display: 'block',
-                      } 
-                    }} 
-                    variant="h6" 
-                    component="div"
-                  >
-                    Close
-                  </Typography>
-                </Box>
-                <Box sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  width: '100%',
-                }}>
-                  <Typography 
-                    sx={{ 
-                      flex: 1, 
-                      color: '#FFF', 
-                      fontSize: '14px',
-                      '@media screen and (min-width: 900px)': {
-                        fontSize: '16px',
-                      }
-                    }} 
-                    variant="h2" 
-                    component="h2"
-                  >
-                    Chapter 1
-                  </Typography>
-                  <Typography 
-                    sx={{ 
-                      flex: 1, 
-                      color: '#FFF', 
-                      fontSize: '12px',
-                      '@media screen and (min-width: 900px)': {
-                        fontSize: '14px',
-                      }
-                    }} 
-                    variant="p" 
-                    component="p"
-                  >
-                    First Contact
-                  </Typography>
-                </Box>
-              </Box>
-            </Toolbar>
-          </AppBar>
-          <DetailSlider />
-        </Dialog>
-      </Container>
+      <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
+      <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} />
     </>
   );
 }
