@@ -9,10 +9,12 @@ import {
   Link,
   Box,
   Rating,
+  Stack,
 } from '@mui/material';
 import NextLink from 'next/link';
 import theme from 'src/themes/theme';
 import LinesEllipsis from 'react-lines-ellipsis'
+import { ArrowCircleRightOutlined } from '@mui/icons-material';
 
 export default function ChapterCard(props) {
   const { data } = props
@@ -57,7 +59,7 @@ export default function ChapterCard(props) {
                           </Box>
                         )
                       }                      
-                      <Box sx={{width: '30%'}}>
+                      <Box sx={{width: '20%'}}>
                         <Image
                           src={item?.image}
                           alt={item?.title}
@@ -68,46 +70,42 @@ export default function ChapterCard(props) {
                       </Box>
                       <CardContent 
                         sx={{
-                          width: '70%', 
+                          width: '90%', 
                           padding: { md: '16px', xs: '10px'},
                           '&:last-child': {
                             paddingBottom: { md: '16px', xs: '10px'},
                           },
                         }}
                       >
-                        <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>                          
-                          <LinesEllipsis
-                            text={item?.title}
-                            maxLine='1'
-                            ellipsis='...'
-                            trimRight
-                            basedOn='letters'
-                          />
-                        </Typography>
-                        <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
-                          <Typography 
-                            variant="body2" 
-                            color="textSecondary" 
-                            component="p" 
-                            sx={{
-                              fontWeight: '800', 
-                              marginRight: '5px',
-                              color: theme.palette.text.main,                              
-                            }}
-                          >
-                            {item?.rating}
-                          </Typography>
-                          <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
-                        </Box>
-                        <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
-                          <LinesEllipsis
-                            text={item?.desc}
-                            maxLine='3'
-                            ellipsis='...'
-                            trimRight
-                            basedOn='letters'
-                          />
-                        </Typography>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Box>
+                            <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>                          
+                              <LinesEllipsis
+                                text={item?.title}
+                                maxLine='1'
+                                ellipsis='...'
+                                trimRight
+                                basedOn='letters'
+                              />
+                            </Typography>
+                            <Typography gutterBottom variant="p" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
+                              <LinesEllipsis
+                                text={item?.desc}
+                                maxLine='1'
+                                ellipsis='...'
+                                trimRight
+                                basedOn='letters'
+                              />
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <ArrowCircleRightOutlined />
+                          </Box>
+                        </Stack>
                       </CardContent>
                     </Box>
                   </Link>

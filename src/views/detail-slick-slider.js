@@ -17,7 +17,8 @@ import {
   Coffee, 
   Share, 
   Facebook, 
-  FileCopy 
+  FileCopy, 
+  SkipNext
 } from '@mui/icons-material';
 
 const actions = [
@@ -163,12 +164,12 @@ const Container = styled('div')(({ theme }) => ({
                 display: 'flex',
                 flexDirection: 'column',
                 'a': {
-                  marginBottom: '24px',
+                  marginBottom: '12px',
                   '&:last-child': {
                     marginBottom: '0'
                   },
                   [theme.breakpoints.down('sm')]: {
-                    marginBottom: '16px',
+                    marginBottom: '12px',
                     '&:last-child': {
                       marginBottom: '0'
                     },
@@ -362,10 +363,6 @@ export default function DetailSlider(props) {
                           sx={{
                             color: theme.palette.secondary.main, 
                             width: 'fit-content',
-                            display: 'none',
-                            '@media screen and (min-width: 900px)': {
-                              display: 'inline-flex',
-                            }
                           }} 
                           size="large"
                           component="a"
@@ -374,10 +371,10 @@ export default function DetailSlider(props) {
                           Coffee ဖိုးပေးမယ်
                         </Button>
                       </Link>
-                      <Box sx={{transform: 'translateZ(0px)', flexGrow: 1 }}>
+                      <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, minHeight: {md: '52px', xs: '44px'}}}>
                         <SpeedDial
                           ariaLabel="SpeedDial basic example"
-                          sx={{ position: 'absolute', bottom: 0, left: 0, }}
+                          sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%'}}
                           icon={<Share />}
                           className="speed-dial-white"
                         >
@@ -393,7 +390,13 @@ export default function DetailSlider(props) {
                       </Box>
                       <Link href="/coffee" passHref>
                         <a>
-                          <Button variant='contained'>
+                          <Button 
+                            variant='outlined' 
+                            className='outlined-white' 
+                            size="large" 
+                            fullWidth
+                            startIcon={<SkipNext />}
+                          >
                             နောက်တစ်ပိုင်း
                           </Button>
                         </a>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import DetailInfo from 'src/views/detail-info';
 import FullDialogSlider from 'src/views/full-dialog-slider';
+import ChapterList from 'src/views/chapter-list';
 
 const detail_data = {
   id: 1,
@@ -80,6 +81,7 @@ export default function Detail() {
     <>
       <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
       <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} />
+      <ChapterList />
     </>
   );
 }

@@ -187,6 +187,12 @@ theme = createTheme(theme, {
         contained: {
           color: '#FFFFFF',
         },
+        outlined: {
+          '&.outlined-white': {
+            color: '#FFFFFF',
+            border: '1px solid #FFFFFF',
+          }
+        },
       },
     },
     MuiSpeedDial: {
@@ -196,6 +202,8 @@ theme = createTheme(theme, {
             '.MuiSpeedDial-fab': {
               color: '#FFFFFF',
               border: '1px solid #FFFFFF',
+              width: '100%',
+              marginBottom: '12px'
             },
           },
         },
