@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import DetailInfo from 'src/views/detail-info';
 import FullDialogSlider from 'src/views/full-dialog-slider';
 import ChapterList from 'src/views/chapter-list';
+import CommentList from 'src/views/comment-list';
+import CoffeeCard from 'src/components/coffee-card';
+import { Box, Container } from '@mui/material';
 
 const detail_data = {
   id: 1,
@@ -82,6 +85,12 @@ export default function Detail() {
       <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
       <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} />
       <ChapterList />
+      <CommentList />
+      <Box component="section" sx={{mt: 5, mb: 5}}>
+        <Container>
+          <CoffeeCard />
+        </Container>
+      </Box>
     </>
   );
 }

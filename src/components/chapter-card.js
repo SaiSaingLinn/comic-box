@@ -90,6 +90,7 @@ export default function ChapterCard(props) {
                                 ellipsis='...'
                                 trimRight
                                 basedOn='letters'
+                                component='span'
                               />
                             </Typography>
                             <Typography gutterBottom variant="p" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
@@ -99,6 +100,7 @@ export default function ChapterCard(props) {
                                 ellipsis='...'
                                 trimRight
                                 basedOn='letters'
+                                component='span'
                               />
                             </Typography>
                           </Box>

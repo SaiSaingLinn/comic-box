@@ -36,7 +36,7 @@ export default function DetailInfo(props) {
   const { data, handleClickOpen } = props;
 
   return (
-    <Box component="section" sx={{mt: 5, mb: 5}}>
+    <Box component="section" sx={{mt: {md: 5, xs: 3}, mb: {md: 5, xs: 3}}}>
       <Container>
         <Box
           sx={{

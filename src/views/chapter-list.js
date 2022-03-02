@@ -43,15 +43,15 @@ const listing_data = [
 
 export default function ChapterList() {
   return (
-    <Box component="section" sx={{background: '#F5F5F6', pt: {md: 5, xs: 0}, pb: {md: 5, xs: 0},}}>
+    <Box component="section" sx={{background: '#F5F5F6', pt: {md: 5, xs: 3}, pb: {md: 5, xs: 3},}}>
       <Container>
-        <Typography variant="h3" component="h2" mb={3}>Chapters</Typography>
-        <Grid container spacing={3}>
+        <Typography variant="h3" component="h2" mb={{md: 3, xs: 2}}>Chapters</Typography>
+        <Grid container spacing={{md: 3, xs: 2}}>
           <ChapterCard data={listing_data} />
         </Grid>
         <Box sx={{mt: {md: 5, xs: 3}, textAlign: 'center'}}>
           <a href="https://www.facebook.com/comic.com.mm/" target="_blank" rel="noopener noreferrer">
-            <Typography variant="p" component="p" mb={3} sx={{color: theme.palette.red.main}}>More Coming Soon..! Follow Us On Facebook.</Typography>
+            <Typography variant="p" component="p" mb={3} sx={{color: theme.palette.red.main, mb: 0}}>More Coming Soon..! Follow Us On Facebook.</Typography>
           </a>
         </Box>
       </Container>

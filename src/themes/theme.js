@@ -186,6 +186,14 @@ theme = createTheme(theme, {
         },
         contained: {
           color: '#FFFFFF',
+          '&.btn-gray': {
+            background: '#EBEBED',
+            color: theme.palette.text.dark,
+          },
+          '&.btn-black': {
+            background: theme.palette.secondary.main,
+            color: '#FFFFFF',
+          },
         },
         outlined: {
           '&.outlined-white': {
