@@ -84,24 +84,10 @@ export default function ChapterCard(props) {
                         >
                           <Box>
                             <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>                          
-                              <LinesEllipsis
-                                text={item?.title}
-                                maxLine='1'
-                                ellipsis='...'
-                                trimRight
-                                basedOn='letters'
-                                component='span'
-                              />
+                              {item?.title}
                             </Typography>
-                            <Typography gutterBottom variant="p" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
-                              <LinesEllipsis
-                                text={item?.desc}
-                                maxLine='1'
-                                ellipsis='...'
-                                trimRight
-                                basedOn='letters'
-                                component='span'
-                              />
+                            <Typography gutterBottom variant="paragraph" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
+                              {item?.desc}
                             </Typography>
                           </Box>
                           <Box>

@@ -192,7 +192,7 @@ export default function DetailInfo(props) {
                 less=""
                 className="content-css"
                 anchorClass="my-anchor-css-class"
-                onClick={() => executeOnClick()}
+                // onClick={() => executeOnClick()}
                 expanded={false}
                 width={0}
                 truncatedEndingComponent={"... "}

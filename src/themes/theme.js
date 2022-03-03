@@ -96,10 +96,10 @@ theme = createTheme(theme, {
           fontWeight: '500',
         },
         h1: {
-          fontSize: '2.5rem',
+          fontSize: '1.75rem',
           fontWeight: '800',
           [theme.breakpoints.down('md')]: {
-            fontSize: '1.5rem',
+            fontSize: '1.125rem',
           },
         },
         h2: {

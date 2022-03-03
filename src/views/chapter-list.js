@@ -51,7 +51,7 @@ export default function ChapterList() {
         </Grid>
         <Box sx={{mt: {md: 5, xs: 3}, textAlign: 'center'}}>
           <a href="https://www.facebook.com/comic.com.mm/" target="_blank" rel="noopener noreferrer">
-            <Typography variant="p" component="p" mb={3} sx={{color: theme.palette.red.main, mb: 0}}>More Coming Soon..! Follow Us On Facebook.</Typography>
+            <Typography variant="paragraph" component="p" mb={3} sx={{color: theme.palette.red.main, mb: 0}}>More Coming Soon..! Follow Us On Facebook.</Typography>
           </a>
         </Box>
       </Container>

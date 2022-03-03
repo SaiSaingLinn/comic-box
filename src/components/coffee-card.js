@@ -67,7 +67,7 @@ export default function CoffeeCard() {
                 <Typography gutterBottom variant="h3" component="p" mb={1} sx={{color: '#FFF', fontWeight: '800', textAlign: {md: 'left', xs: 'center'}}}>                          
                   More Coffee = More Comic
                 </Typography>
-                <Typography gutterBottom variant="h5" component="p" sx={{color: '#FFF', textAlign: {md: 'left', xs: 'center'}}} mb={0}>                          
+                <Typography gutterBottom variant="h5" component="p" sx={{color: '#FFF', textAlign: {md: 'left', xs: 'center'}, fontWeight: '500', lineHeight: '28px'}} mb={0}>                          
                   Comic တွေ တစ်ဝကြီးဖတ်ဖို့ Coffee ဖိုးလေးတွေ စေတနာရှိသလောက်ပေးလို့ရပါပြီ။
                 </Typography>
               </Box>

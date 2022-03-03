@@ -17,7 +17,7 @@ const listing_data = [
   {
     id: 1,
     title: 'User #9481',
-    desc: 'ဒီတင်ထားတာကဖတ်လို့ရတယ်မလား ဒီတင်ထားတာကဖတ်လို့ရတယ်မလား ဒီတင်ထားတာကဖတ်လို့ရတယ်မလား ဒီတင်ထားတာကဖတ်လို့ရတယ်မလား',
+    desc: 'ဒီတင်ထားတာကဖတ်လို့ရတယ်မလား',
   },
   {
     id: 2,
@@ -59,10 +59,23 @@ export default function CommentList() {
             Add a comment
           </Button>
         </Box>
-        <Grid container spacing={2} mb={2}>
+        <Grid container spacing={2} mb={{md: 2, xs: 1}}>
           <CommentCard data={listing_data} />
         </Grid>
-        <Button variant="text">View more comments</Button>
+        <Box>
+          <Button variant="text">View more comments</Button>
+        </Box>
+        <Box mt={2}>
+          <Button 
+            variant="contained" 
+            startIcon={<AddComment />} 
+            className="btn-gray" 
+            onClick={handleClickOpen}
+            sx={{display: {xs: 'inline-flex', md: 'none'}}}
+          >
+            Add a comment
+          </Button>
+        </Box>
       </Container>
       <Dialog open={open} onClose={handleClose} maxWidth={"xs"} fullWidth>
         <DialogTitle variant="h5" sx={{fontWeight: '800', paddingBottom: '0'}}>Your Comment</DialogTitle>

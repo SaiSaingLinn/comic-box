@@ -87,7 +87,7 @@ export default function FullDialogSlider(props) {
                 >
                   <Close 
                     sx={{
-                      fontSize: '1rem',
+                      fontSize: '1.5rem',
                       '@media screen and (min-width: 900px)': {
                         fontSize: '1.5rem',
                       } 

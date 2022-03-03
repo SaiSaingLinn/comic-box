@@ -5,6 +5,7 @@ import ChapterList from 'src/views/chapter-list';
 import CommentList from 'src/views/comment-list';
 import CoffeeCard from 'src/components/coffee-card';
 import { Box, Container } from '@mui/material';
+import RecommendedList from 'src/views/recommended-list';
 
 const detail_data = {
   id: 1,
@@ -91,6 +92,7 @@ export default function Detail() {
           <CoffeeCard />
         </Container>
       </Box>
+      <RecommendedList />
     </>
   );
 }

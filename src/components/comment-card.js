@@ -51,24 +51,10 @@ export default function CommentCard(props) {
                   >
                     <Box>
                       <Typography gutterBottom variant="paragraph" component="p" sx={{color: theme.palette.text.dark, fontWeight: '800'}}>                          
-                        <LinesEllipsis
-                          text={item?.title}
-                          maxLine='1'
-                          ellipsis='...'
-                          trimRight
-                          basedOn='letters'
-                          component='span'
-                        />
+                        {item?.title}
                       </Typography>
                       <Typography gutterBottom variant="paragraph" component="p" sx={{color: theme.palette.text.main}} mb={0}>                          
-                        <LinesEllipsis
-                          text={item?.desc}
-                          maxLine='1'
-                          ellipsis='...'
-                          trimRight
-                          basedOn='letters'
-                          component='span'
-                        />
+                        {item?.desc}
                       </Typography>
                     </Box>
                     

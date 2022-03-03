@@ -82,7 +82,7 @@ export default function MediaCard(props) {
                             ellipsis='...'
                             trimRight
                             basedOn='letters'
-                            component='span'
+                            component='p'
                           />
                         </Typography>
                         <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
@@ -100,14 +100,14 @@ export default function MediaCard(props) {
                           </Typography>
                           <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
                         </Box>
-                        <Typography variant="paragraph" component="p" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
+                        <Typography variant="paragraph" component="h6" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
                           <LinesEllipsis
                             text={item?.desc}
-                            maxLine='3'
+                            maxLine='2'
                             ellipsis='...'
                             trimRight
                             basedOn='letters'
-                            component='span'
+                            component='p'
                           />
                         </Typography>
                       </CardContent>
