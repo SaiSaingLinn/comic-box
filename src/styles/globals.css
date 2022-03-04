@@ -22,3 +22,24 @@ main {
 a {
   text-decoration: none;
 }
+
+/* nprogress customised style  */
+#nprogress .bar { background: #10B981 !important; z-index: 99999 !important;}
+#nprogress .spinner { z-index: 99999 !important;}
+#nprogress .spinner-icon {border-top-color: #10B981 !important; border-left-color: #10B981 !important;}
+/* #nprogress {
+  .bar {
+    background: ${colors.pageBg};
+  }
+  .spinner {
+    left: 15px;
+    @media (max-width: 991px) {
+      left: 5px;
+      top: 5px;
+    }
+    .spinner-icon {
+      border-top-color: ${colors.pageBg};
+      border-left-color: ${colors.pageBg};
+    }
+  }
+} */

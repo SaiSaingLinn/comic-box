@@ -205,14 +205,14 @@ export default function ElevateAppBar(props) {
           </Link>
         </ListItem>
         <ListItem button sx={{padding: '16px 24px'}}>
-          <Link href="/" passHref>
+          <Link href="/about-us" passHref>
             <a>
               <Typography variant="h4" sx={{color: '#FFF'}}>About Us</Typography>
             </a>
           </Link>
         </ListItem>
         <ListItem button sx={{padding: '16px 24px'}}>
-          <Link href="/" passHref>
+          <Link href="/request-comic" passHref>
             <a>
               <Typography variant="h4" sx={{color: '#FFF'}}>Request Comics</Typography>
             </a>
@@ -222,7 +222,7 @@ export default function ElevateAppBar(props) {
           <Typography variant="h4" sx={{color: '#FFF'}} onClick={handleClickOpen}>Feedback</Typography>
         </ListItem>
         <ListItem button sx={{padding: '16px 24px'}}>
-          <Link href="/" passHref>
+          <Link href="/coffee" passHref>
             <Button 
               component="a"
               variant="contained" 
@@ -242,12 +242,12 @@ export default function ElevateAppBar(props) {
             </a>
           </ListItem>
           <ListItem button sx={{padding: '8px 24px'}}>
-            <a href="/" target="_blank" rel="noopener noreferrer">
+            <a href="mailto:contact@comicbox.net" target="_blank" rel="noopener noreferrer">
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>email: contact@comicbox.net</Typography>
             </a>
           </ListItem>
           <ListItem button sx={{padding: '8px 24px'}}>
-            <a href='/'>
+            <a href="tel:09778869369" target="_blank" rel="noopener noreferrer">
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>Phone: 09778869369</Typography>
             </a>
           </ListItem>
@@ -373,29 +373,41 @@ export default function ElevateAppBar(props) {
                       <Typography 
                         noWrap 
                         component="span"
-                        sx={{ my: 2, display: 'block' }}
+                        sx={{ 
+                          my: 2, 
+                          display: 'block',
+                          color: router.pathname === '/' && '#FFF', 
+                        }}
                       >
                         Home
                       </Typography>
                     </a>
                   </Link>
-                  <Link href={`/`} passHref>
+                  <Link href={`/about-us`} passHref>
                     <a>
                       <Typography 
                         noWrap 
                         component="span"
-                        sx={{ my: 2, display: 'block' }}
+                        sx={{ 
+                          my: 2, 
+                          display: 'block',
+                          color: router.pathname === '/about-us' && '#FFF', 
+                        }}
                       >
                         About Us
                       </Typography>
                     </a>
                   </Link>
-                  <Link href={`/`} passHref>
+                  <Link href={`/request-comic`} passHref>
                     <a>
                       <Typography 
                         noWrap 
                         component="span"
-                        sx={{ my: 2, display: 'block' }}
+                        sx={{ 
+                          my: 2, 
+                          display: 'block',
+                          color: router.pathname === '/request-comic' && '#FFF', 
+                        }}
                       >
                         Request Comics
                       </Typography>
@@ -422,7 +434,7 @@ export default function ElevateAppBar(props) {
               </Box>
               {/* end desktop menu */}
               <Box>
-                <Link href="/" passHref>
+                <Link href="/coffee" passHref>
                   <Button 
                     sx={{display: { xs: 'none', md: 'inline-flex' }, marginRight: '25px'}}
                     variant="contained" 

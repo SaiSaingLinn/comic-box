@@ -74,7 +74,7 @@ export default function CoffeeCard() {
             </Stack>
           </CardContent>
           <Box sx={{flex: 'none'}} ml={1}>
-            <Link href="/" passHref>
+            <Link href="/coffee" passHref>
               <Button 
                 variant="contained" 
                 component="a"

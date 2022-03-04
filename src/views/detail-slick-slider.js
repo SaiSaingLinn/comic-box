@@ -8,6 +8,7 @@ import {
   Typography,
   SpeedDialAction,
   SpeedDial,
+  Snackbar,
 } from '@mui/material';
 import Link from 'next/link';
 import { detail } from "store/actions"
@@ -20,11 +21,6 @@ import {
   FileCopy, 
   SkipNext
 } from '@mui/icons-material';
-
-const actions = [
-  { icon: <FileCopy />, name: 'Copy Link' },
-  { icon: <Facebook />, name: 'Facebook' },
-];
 
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: '#000',
@@ -197,75 +193,6 @@ const Container = styled('div')(({ theme }) => ({
   }
 }));
 
-const listing_data = [
-  {
-    id: 7,
-    title: 'Item 7',
-    price: '$100',
-    image: '/comic4.jpg',
-  },
-  {
-    id: 8,
-    title: 'Item 8',
-    price: '$200',
-    image: '/comic1.png',
-  },
-  {
-    id: 9,
-    title: 'Item 9',
-    price: '$300',
-    image: '/comic2.png',
-  },
-  {
-    id: 10,
-    title: 'Item 10',
-    price: '$400',
-    image: '/comic3.jpg',
-  },
-  {
-    id: 11,
-    title: 'Item 11',
-    price: '$500',
-    image: '/comic5.jpg',
-  },
-  {
-    id: 1,
-    title: 'Item 1',
-    price: '$100',
-    image: 'https://picsum.photos/id/1018/1000/600/',
-  },
-  {
-    id: 2,
-    title: 'Item 2',
-    price: '$200',
-    image: 'https://picsum.photos/id/1015/1000/600/',
-  },
-  {
-    id: 3,
-    title: 'Item 3',
-    price: '$300',
-    image: 'https://picsum.photos/id/1019/1000/600/',
-  },
-  {
-    id: 4,
-    title: 'Item 1',
-    price: '$100',
-    image: 'https://picsum.photos/id/1018/1000/600/',
-  },
-  {
-    id: 5,
-    title: 'Item 2',
-    price: '$200',
-    image: 'https://picsum.photos/id/1015/1000/600/',
-  },
-  {
-    id: 6,
-    title: 'Item 3',
-    price: '$300',
-    image: 'https://picsum.photos/id/1019/1000/600/',
-  },
-]
-
 const settingsMain = {
   arrows: true,
   responsive: [
@@ -303,7 +230,7 @@ const settingsNav = {
 }
 
 export default function DetailSlider(props) {
-  const { data } = props;
+  const { data, detail_data, handleClickOpen, handleClose } = props;
   
   const dispatch = useDispatch()
   const { hide_action } = useSelector(state => state.detail)
@@ -324,6 +251,55 @@ export default function DetailSlider(props) {
     hide_action ?
     dispatch(detail.setHideAction('HIDE_ACTION', false)) :
     dispatch(detail.setHideAction('HIDE_ACTION', true))
+  }
+
+  // toast alert 
+  const [toast, setToast] = useState({
+    open: false,
+    vertical: 'bottom',
+    horizontal: 'center',
+  })
+
+  const handleCloseToast = () => {
+    setToast({ open: false });
+  };
+
+  const { vertical, horizontal, open } = toast
+
+  // handle copy code 
+  const handleCopy = () => {
+    /* Copy code */
+    navigator.clipboard.writeText(window.location.href)
+    setToast({ open: true});
+  }
+
+  // get next chapter index if exist
+  const [nextChapterIndex, setNextChapterIndex] = useState(null)
+  const [nextChapterId, setNextChapterId] = useState(null)
+  useEffect(() => {
+    let next_chapter_index = 0
+    detail_data?.chapters?.map((item, index) => {
+      if (item.id === data.id) {
+        next_chapter_index = index + 1
+      }
+    })
+    if (next_chapter_index === detail_data?.chapters?.length) {
+      next_chapter_index = 0
+    }
+    setNextChapterIndex(next_chapter_index)
+    // get id of next chapter base on next_chapter_index
+    let next_chapter_id = detail_data?.chapters?.[next_chapter_index]?.id
+    setNextChapterId(next_chapter_id)
+  }, [detail_data, data])
+
+  // handle next chapter
+  const handleNextChapter = () => {
+    // close current chapter and then set time out 1s before open next chapter
+    handleClose()
+    setTimeout(() => {
+      handleClickOpen(nextChapterId)
+      dispatch(detail.setHideAction('HIDE_ACTION', false))
+    }, 500)
   }
 
   return (  
@@ -356,7 +332,7 @@ export default function DetailSlider(props) {
                     <Typography variant='h4' component='h4' sx={{color: '#FFF', mb: 3}}>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</Typography>
                     {/* <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p> */}
                     <div className='btn-wrap'>
-                      <Link href={`/`} passHref>
+                      <Link href={`/coffee`} passHref>
                         <Button 
                           variant="contained" 
                           color="light" 
@@ -378,29 +354,36 @@ export default function DetailSlider(props) {
                           icon={<Share />}
                           className="speed-dial-white"
                         >
-                          {actions.map((action) => (
-                            <SpeedDialAction
-                              key={action.name}
-                              icon={action.icon}
-                              tooltipTitle={action.name}
-                              tooltipOpen
-                            />
-                          ))}
+                          <SpeedDialAction
+                            icon={<FileCopy />}
+                            onClick={() => handleCopy()}
+                            key="Copy Link"
+                            tooltipTitle="Copy Link"
+                            tooltipOpen
+                          />
+                          <SpeedDialAction
+                            icon={<Facebook />}
+                            onClick={() => console.log('You clicked Share')}
+                            key="Facebook"
+                            tooltipTitle="Facebook"
+                            tooltipOpen
+                          />
                         </SpeedDial>
                       </Box>
-                      <Link href="/coffee" passHref>
-                        <a>
-                          <Button 
-                            variant='outlined' 
-                            className='outlined-white' 
-                            size="large" 
-                            fullWidth
-                            startIcon={<SkipNext />}
-                          >
-                            နောက်တစ်ပိုင်း
-                          </Button>
-                        </a>
-                      </Link>
+                      {
+                        nextChapterIndex !== null &&
+                        nextChapterIndex > 0 &&
+                        <Button 
+                          variant='outlined' 
+                          className='outlined-white' 
+                          size="large" 
+                          fullWidth
+                          startIcon={<SkipNext />}
+                          onClick={() => handleNextChapter()}
+                        >
+                          နောက်တစ်ပိုင်း
+                        </Button>
+                      }
                     </div>
                   </div>
                 </div>
@@ -436,6 +419,14 @@ export default function DetailSlider(props) {
           }
         </Slider>
       </Container>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={5000}
+        message="Copied to clipboard"
+        key={vertical + horizontal}
+        onClose={handleCloseToast}
+      />
     </>
   );
 }

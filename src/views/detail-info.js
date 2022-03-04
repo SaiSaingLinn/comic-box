@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { 
   Typography,
@@ -9,7 +9,8 @@ import {
   Button,
   SpeedDialAction,
   SpeedDial,
-  styled
+  styled,
+  Snackbar,
 } from '@mui/material';
 import theme from 'src/themes/theme';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -35,6 +36,26 @@ const actions = [
 export default function DetailInfo(props) {
   const { data, handleClickOpen } = props;
 
+  // toast alert 
+  const [toast, setToast] = useState({
+    open: false,
+    vertical: 'bottom',
+    horizontal: 'center',
+  })
+
+  const handleClose = () => {
+    setToast({ open: false });
+  };
+
+  const { vertical, horizontal, open } = toast
+
+  // handle copy code 
+  const handleCopy = () => {
+    /* Copy code */
+    navigator.clipboard.writeText(window.location.href)
+    setToast({ open: true});
+  }
+
   return (
     <Box component="section" sx={{mt: {md: 5, xs: 3}, mb: {md: 5, xs: 3}}}>
       <Container>
@@ -54,6 +75,7 @@ export default function DetailInfo(props) {
               layout="responsive"
               width={160}
               height={240}
+              priority
             />
           </Box>
           <Box 
@@ -164,14 +186,20 @@ export default function DetailInfo(props) {
                     sx={{ position: 'absolute', bottom: 0, left: 0 }}
                     icon={<Share />}
                   >
-                    {actions.map((action) => (
-                      <SpeedDialAction
-                        key={action.name}
-                        icon={action.icon}
-                        tooltipTitle={action.name}
-                        tooltipOpen
-                      />
-                    ))}
+                    <SpeedDialAction
+                      icon={<FileCopy />}
+                      onClick={() => handleCopy()}
+                      key="Copy Link"
+                      tooltipTitle="Copy Link"
+                      tooltipOpen
+                    />
+                    <SpeedDialAction
+                      icon={<Facebook />}
+                      onClick={() => console.log('You clicked Share')}
+                      key="Facebook"
+                      tooltipTitle="Facebook"
+                      tooltipOpen
+                    />
                   </SpeedDial>
                 </Box>
               </Stack>
@@ -222,19 +250,33 @@ export default function DetailInfo(props) {
                 sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}
                 icon={<Share />}
               >
-                {actions.map((action) => (
-                  <SpeedDialAction
-                    key={action.name}
-                    icon={action.icon}
-                    tooltipTitle={action.name}
-                    tooltipOpen
-                  />
-                ))}
+                <SpeedDialAction
+                  icon={<FileCopy />}
+                  onClick={() => handleCopy()}
+                  key="Copy Link"
+                  tooltipTitle="Copy Link"
+                  tooltipOpen
+                />
+                <SpeedDialAction
+                  icon={<Facebook />}
+                  onClick={() => console.log('You clicked Share')}
+                  key="Facebook"
+                  tooltipTitle="Facebook"
+                  tooltipOpen
+                />
               </SpeedDial>
             </Box>
           </Stack>
         </Box>
       </Container>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={5000}
+        message="Copied to clipboard"
+        key={vertical + horizontal}
+        onClose={handleClose}
+      />
     </Box>
   );
 }

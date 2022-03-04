@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function FullDialogSlider(props) {
-  const { data, handleClose, state } = props;
+  const { data, handleClose, state, detail_data, handleClickOpen } = props;
   const { hide_action } = useSelector(state => state.detail);
 
   return (
@@ -141,7 +141,7 @@ export default function FullDialogSlider(props) {
             </Box>
           </Toolbar>
         </AppBar>
-        <DetailSlider data={data} />
+        <DetailSlider data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} />
       </Dialog>
     </Container>
   )
