@@ -308,7 +308,10 @@ export default function DetailSlider(props) {
         <Slider
             className="main-slide"
             infinite={false}
-            touchThreshold= {50}
+            touchThreshold={50}
+            speed={100}
+            easing="ease-in-out"
+            useCSS={true}
             asNavFor={nav2}
             ref={slider => (slider1 = slider)}
             afterChange={current => setSlideIndex(current)}
