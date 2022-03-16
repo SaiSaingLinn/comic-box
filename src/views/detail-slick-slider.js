@@ -25,6 +25,7 @@ import {
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: '#000',
   '.slide-nav': {
+    display: 'none',
     '.slick-list': {
       '.slick-track': {
         '.slick-slide': {
@@ -108,13 +109,13 @@ const Container = styled('div')(({ theme }) => ({
             position: 'relative', 
             width: '100%',
             maxWidth: '1220px',
-            height: 'calc(100vh - 240px)',
+            height: 'calc(100vh - 165px)',
             margin: '10px auto',
           },
           // '.coffee-wrap': {
           //   width: '100%',
           //   maxWidth: '1220px',
-          //   height: 'calc(100vh - 240px)',
+          //   height: 'calc(100vh - 165px)',
           //   objectFit: 'contain',
           //   margin: '10px auto',
           // },
@@ -299,7 +300,7 @@ export default function DetailSlider(props) {
     setTimeout(() => {
       handleClickOpen(nextChapterId)
       dispatch(detail.setHideAction('HIDE_ACTION', false))
-    }, 500)
+    }, 1000)
   }
 
   return (  
@@ -393,8 +394,8 @@ export default function DetailSlider(props) {
               </div>         
             </div>
         </Slider>
-        <div className="slide-index">
-          <p>
+        <div className="slide-index" style={{opacity: hide_action ? '0' : '1', transition: 'ease-in-out .2s'}}>
+          <p style={{marginTop: 0, marginBottom: 0}}>
             {
               `( ${(slideIndex + 1) +' '+ 'of' +' '+ (data?.image?.length + 1)} )`
             }

@@ -22,7 +22,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function FullDialogSlider(props) {
   const { data, handleClose, state, detail_data, handleClickOpen } = props;
   const { hide_action } = useSelector(state => state.detail);
-
   return (
     <Container>
       <Dialog
@@ -45,8 +44,8 @@ export default function FullDialogSlider(props) {
         <AppBar sx={{ 
           position: 'relative', 
           background: 'transparent',
-          paddingRight: '22px',
-          paddingLeft: '22px',
+          paddingRight: '0px',
+          paddingLeft: '0px',
           opacity: hide_action ? '0' : '1',
           transition: 'ease-in-out .2s',
           '@media screen and (min-width: 900px)': {
@@ -70,6 +69,8 @@ export default function FullDialogSlider(props) {
                   display: 'flex',
                   alignItems: 'center',
                   cursor: 'pointer',
+                  position: 'absolute',
+                  left: '16px',
                 }}
                 onClick={handleClose}
               >
@@ -79,7 +80,8 @@ export default function FullDialogSlider(props) {
                   aria-label="close"
                   sx={{
                     color: '#FFF',
-                    padding: '0px',
+                    padding: '8px',
+                    
                     '@media screen and (min-width: 900px)': {
                       padding: '8px',
                     }
@@ -88,6 +90,8 @@ export default function FullDialogSlider(props) {
                   <Close 
                     sx={{
                       fontSize: '1.5rem',
+                      // width: '40px',
+                      // height: '40px',
                       '@media screen and (min-width: 900px)': {
                         fontSize: '1.5rem',
                       } 

@@ -29,13 +29,14 @@ export default function RequestComic() {
             autoComplete="off"
           >
             <div>
-              <TextField id="filled-basic" label="Comic book suggestion 1" variant="filled" />
-            </div>
-            <div>
-              <TextField id="filled-basic" label="Comic book suggestion 2" variant="filled" />
-            </div>
-            <div>
-              <TextField id="filled-basic" label="Comic book suggestion 3" variant="filled" />
+              <TextField
+                fullWidth
+                multiline
+                rows={4}
+                id="filled-basic" 
+                label="Comic book suggestion"
+                variant="outlined"
+              />
             </div>
             <Button variant="contained" size='large'>​တောင်းစိုရန်</Button>
           </Box>
@@ -60,7 +61,7 @@ export default function RequestComic() {
             </Typography>
           </a>
         </Box>
-        <Box sx={{display: 'flex'}}>
+        {/* <Box sx={{display: 'flex'}}>
           <Typography variant='h5' component='p' color={theme.palette.primary.main} mr={1} sx={{fontWeight: '500'}}>phone:</Typography>
           <a href="tel:09778869369" target="_blank" rel="noopener noreferrer">
             <Typography 
@@ -77,7 +78,7 @@ export default function RequestComic() {
               09778869369
             </Typography>
           </a>
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   )

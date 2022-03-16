@@ -246,11 +246,11 @@ export default function ElevateAppBar(props) {
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>email: contact@comicbox.net</Typography>
             </a>
           </ListItem>
-          <ListItem button sx={{padding: '8px 24px'}}>
+          {/* <ListItem button sx={{padding: '8px 24px'}}>
             <a href="tel:09778869369" target="_blank" rel="noopener noreferrer">
               <Typography variant="p" sx={{fontSize: '14px', color: theme.palette.primary.main}}>Phone: 09778869369</Typography>
             </a>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Box>
     </Box>
@@ -416,12 +416,13 @@ export default function ElevateAppBar(props) {
                   <Typography 
                     noWrap 
                     component="span"
-                    sx={{ my: 2, display: 'block' }}
                     onClick={handleClickOpen}
                     sx={(theme) => ({
                         color: theme.palette.text.main,
                         cursor: 'pointer',
                         transition: 'ease-in-out .2s',
+                        my: 2,
+                        display: 'block',
                         '&:hover': {
                           color: '#FFF',
                         }

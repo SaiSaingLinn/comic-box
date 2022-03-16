@@ -118,9 +118,11 @@ const RecommendedList = () => {
     autoplay: false,
     swipeToSlide: true,
     autoplaySpeed: 5000,
-    speed: 1000,
+    speed: 100,
     infinite: false,
     touchThreshold: 50,
+    easing: "ease-in-out",
+    useCSS: true,
     responsive: [
       {
         breakpoint: 900,

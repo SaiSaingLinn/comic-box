@@ -35,7 +35,7 @@ const detail_data = {
         'https://boombabyhome.files.wordpress.com/2021/11/dark-knights-of-steel-1-page-2.jpg',
         'https://i0.wp.com/batman-news.com/wp-content/uploads/2021/12/Dark-Knights-of-Steel-2-1.png?resize=696%2C382&quality=80&strip=info&ssl=1',
         'https://i0.wp.com/aiptcomics.com/wp-content/uploads/2021/10/COL09.jpg?ssl=1',
-        'https://752617.smushcdn.com/1328696/wp-content/uploads/2021/11/Dark-Knights-Of-Steel-1-7-scaled.jpg?lossy=1&strip=1&webp=1',
+        'https://i.insider.com/5c21315f01c0ea07ad186e92?width=700',
       ],
     },
     {
@@ -56,7 +56,7 @@ const detail_data = {
         'https://boombabyhome.files.wordpress.com/2021/11/dark-knights-of-steel-1-page-2.jpg',
         'https://i0.wp.com/batman-news.com/wp-content/uploads/2021/12/Dark-Knights-of-Steel-2-1.png?resize=696%2C382&quality=80&strip=info&ssl=1',
         'https://i0.wp.com/aiptcomics.com/wp-content/uploads/2021/10/COL09.jpg?ssl=1',
-        'https://752617.smushcdn.com/1328696/wp-content/uploads/2021/11/Dark-Knights-Of-Steel-1-7-scaled.jpg?lossy=1&strip=1&webp=1',
+        'https://i.insider.com/5c21315f01c0ea07ad186e92?width=700',
       ]
     },
     {
@@ -77,7 +77,7 @@ const detail_data = {
         'https://boombabyhome.files.wordpress.com/2021/11/dark-knights-of-steel-1-page-2.jpg',
         'https://i0.wp.com/batman-news.com/wp-content/uploads/2021/12/Dark-Knights-of-Steel-2-1.png?resize=696%2C382&quality=80&strip=info&ssl=1',
         'https://i0.wp.com/aiptcomics.com/wp-content/uploads/2021/10/COL09.jpg?ssl=1',
-        'https://752617.smushcdn.com/1328696/wp-content/uploads/2021/11/Dark-Knights-Of-Steel-1-7-scaled.jpg?lossy=1&strip=1&webp=1',
+        'https://i.insider.com/5c21315f01c0ea07ad186e92?width=700',
       ]
     },
   ]
@@ -105,6 +105,25 @@ export default function Detail() {
       setChapterData(chapter_data);
     }
   }, [state.chapter])
+
+  const [scrollPosition, setSrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setSrollPosition(position);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  console.log('scrollPosition', scrollPosition)
+  useEffect(() => {
+    scrollPosition > 0 && setState({open: false, chapter: null})
+  }, [scrollPosition])
 
   return (
     <>
