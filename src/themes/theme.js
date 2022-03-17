@@ -263,6 +263,9 @@ theme = createTheme(theme, {
     },
     MuiDialog: {
       styleOverrides: {
+        root: {
+          height: '100vh',
+        },
         paper: {
           background: '#fff',
           borderRadius: '0px',

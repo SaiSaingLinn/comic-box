@@ -83,7 +83,7 @@ const detail_data = {
   ]
 }
 
-export default function Detail() {
+export default function OverviewDetail() {
   const [chapterData, setChapterData] = useState(null)
   const [state, setState] = useState({
     open: false,
@@ -92,10 +92,18 @@ export default function Detail() {
 
   const handleClickOpen = (id) => {
     setState({open: true, chapter: id});
+    if (typeof window !== "undefined") {
+      // Client-side-only code
+      document.body.style.cssText = "height: 100%; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch;";
+    }
   };
   
   const handleClose = () => {
     setState({open: false, chapter: null});
+    if (typeof window !== "undefined") {
+      // Client-side-only code
+      document.body.style.cssText = null;
+    }
   };
 
   useEffect(() => {
@@ -105,25 +113,6 @@ export default function Detail() {
       setChapterData(chapter_data);
     }
   }, [state.chapter])
-
-  const [scrollPosition, setSrollPosition] = useState(0);
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setSrollPosition(position);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-        window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  console.log('scrollPosition', scrollPosition)
-  useEffect(() => {
-    scrollPosition > 0 && setState({open: false, chapter: null})
-  }, [scrollPosition])
 
   return (
     <>

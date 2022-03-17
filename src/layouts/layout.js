@@ -2,13 +2,15 @@ import React, { useRef, useEffect } from "react";
 import Footer from "./footer";
 import Header from "./header";
 import Head from 'next/head'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import nProgress from "nprogress";
 import 'nprogress/nprogress.css';
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 
 const Layout = ({ children }, showAfterMs = 250, options = { minimum: 0.01, speed: 500 }) => {
+  const router = useRouter();
+  const showLayout = router.pathname === "/detail/chapter/[id]" ? false : true;
   const timer = useRef(null);
 
   const routeChangeStart = () => {
@@ -38,16 +40,18 @@ const Layout = ({ children }, showAfterMs = 250, options = { minimum: 0.01, spee
     }
   }, [showAfterMs, options]);
 
+  console.log('router', router)
+
   return (
     <div className="content">
       <Head>
         {/* <link rel="icon" href="/favicon.png" /> */}
       </Head>
-      <Header />
+      {showLayout && <Header />}
         <main>
           { children }
         </main>
-      <Footer />
+      {showLayout && <Footer />}
     </div> 
   );
 }

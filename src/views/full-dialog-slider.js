@@ -14,6 +14,7 @@ import {
 import {
   Close,
 } from '@mui/icons-material';
+import DetailSwiper from './detail-swiper-slider';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -59,9 +60,7 @@ export default function FullDialogSlider(props) {
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
-                '@media screen and (min-width: 900px)': {
-                  width: 'calc(100% - 84px)',
-                }     
+                    
               }}
             > 
               <Box 
@@ -145,7 +144,8 @@ export default function FullDialogSlider(props) {
             </Box>
           </Toolbar>
         </AppBar>
-        <DetailSlider data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+        {/* <DetailSlider data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
+        <DetailSwiper data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} />
       </Dialog>
     </Container>
   )
