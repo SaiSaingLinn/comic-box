@@ -9,6 +9,7 @@ import {
   SpeedDialAction,
   SpeedDial,
   Snackbar,
+  IconButton,
 } from '@mui/material';
 import Link from 'next/link';
 import { detail } from "store/actions"
@@ -19,7 +20,8 @@ import {
   Share, 
   Facebook, 
   FileCopy, 
-  SkipNext
+  SkipNext,
+  Close,
 } from '@mui/icons-material';
 // Import Swiper React components
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
@@ -113,6 +115,7 @@ const Container = styled('div')(({ theme }) => ({
   backgroundColor: '#000',
   '.swiper': {
     height: '100vh',
+    height: 'calc(var(--vh, 1vh) * 100)',
     '.swiper-button-prev': {
       left: '40px',
       width: '48px',
@@ -167,7 +170,6 @@ const Container = styled('div')(({ theme }) => ({
     margin: '0 auto',
     textAlign: 'center',
     '& img': {
-      // width: '100%',
       height: '100vh',
       maxHeight: 'calc(100vh)',
       objectFit: 'contain',
@@ -298,13 +300,141 @@ export default function ChapterDetail() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Client-side-only code
-      document.body.style.cssText = "width: 100%; height: 100%; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; top: 0; left: 0; right: 0; bottom: 0;";
+      document.body.style.cssText = `
+        width: 100%; 
+        position: fixed; 
+        overflow-y: scroll; 
+        -webkit-overflow-scrolling: touch; 
+        top: 0; 
+        left: 0;
+        height: 100%;
+        height: -moz-available;
+        height: -webkit-fill-available;
+        height: fill-available;
+        height: stretch;
+      `;
+    }
+    if (typeof window !== "undefined") {
+      // Client-side-only code
+      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+      let vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    if (typeof window !== "undefined") {
+      // Client-side-only code
+      // We listen to the resize event
+      window.addEventListener('resize', () => {
+        // We execute the same script as before
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      });
     }
   }, [])
 
   return (  
     <>
       <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            zIndex: '9',
+            background: 'rgba(29, 29, 33, 0.5)',
+            padding: '8px 0',
+            opacity: hide_action ? '0' : '1',
+            transition: 'ease-in-out .2s',
+            '@media screen and (min-width: 900px)': {
+              padding: '10px 40px',
+            }
+          }}
+        > 
+          <Box 
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+              position: 'absolute',
+              left: '16px',
+              '@media screen and (min-width: 900px)': {
+                left: '40px',
+              }
+            }}
+          >
+            <Link href={`/detail/overview/1`} passHref>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="close"
+                sx={{
+                  color: '#FFF',
+                  padding: '8px',
+                  '@media screen and (min-width: 900px)': {
+                    padding: '8px',
+                  }
+                }}
+              >
+                <Close 
+                  sx={{
+                    fontSize: '1.5rem',
+                    // width: '40px',
+                    // height: '40px',
+                    '@media screen and (min-width: 900px)': {
+                      fontSize: '1.5rem',
+                    } 
+                  }}
+                />
+              </IconButton>
+              <Typography 
+                sx={{ 
+                  ml: 2, 
+                  flex: 1, 
+                  color: '#FFF', 
+                  marginLeft: '6px',
+                  display: 'none',
+                  '@media screen and (min-width: 900px)': {
+                    display: 'block',
+                  } 
+                }} 
+                variant="h5" 
+                component="div"
+              >
+                Close
+              </Typography>
+            </Link>
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
+          }}>
+            <Typography 
+              sx={{ 
+                flex: 1, 
+                color: '#FFF',
+              }} 
+              variant="h5" 
+              component="h2"
+            >
+              Title
+            </Typography>
+            <Typography 
+              sx={{ 
+                flex: 1, 
+                color: '#FFF',
+              }} 
+              variant="caption" 
+              component="p"
+            >
+              Sub Title
+            </Typography>
+          </Box>
+        </Box>
         <Swiper
           modules={[Navigation, Pagination, Zoom, Lazy]}
           navigation={hide_action ? false : true}
@@ -315,7 +445,7 @@ export default function ChapterDetail() {
           spaceBetween={50}
           slidesPerView={1}
           zoom={true}
-          lazy={true}
+          lazy={false}
           // onSlideChange={() => console.log('slide change')}
           // onSwiper={(swiper) => swiper && swiper.slideTo(0, 1, false)}
         >
@@ -323,8 +453,7 @@ export default function ChapterDetail() {
             detail_data?.chapters[0]?.image?.map((x, i) => (
               <SwiperSlide key={i} onClick={() => handleHideAction()}>
                 <div className='img-wrap swiper-zoom-container'>
-                  <img src={x} alt="detail" className='swiper-lazy' />
-                  <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                  <img src={x} alt="detail" />
                 </div>
                 {/* <div className='img-wrap'>
                   <Image src={x} alt='detail' layout="fill" objectFit="contain" />

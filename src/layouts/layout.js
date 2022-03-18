@@ -40,8 +40,6 @@ const Layout = ({ children }, showAfterMs = 250, options = { minimum: 0.01, spee
     }
   }, [showAfterMs, options]);
 
-  console.log('router', router)
-
   return (
     <div className="content">
       <Head>
