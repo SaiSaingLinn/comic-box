@@ -23,7 +23,7 @@ export default function MediaCard(props) {
           <Grid item xs={12} md={6} key={item?.id}>
             <Card>
               <CardActionArea>
-                <NextLink href={`/detail/1`} passHref>
+                <NextLink href={`/detail/overview/1`} passHref>
                   <Link underline="none">
                     <Box
                       sx={{

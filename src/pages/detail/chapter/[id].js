@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import Slider from 'react-slick'
 import { styled } from '@mui/material/styles';
@@ -24,7 +24,7 @@ import {
   Close,
 } from '@mui/icons-material';
 // Import Swiper React components
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper, useSwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -34,6 +34,7 @@ import "swiper/css/lazy";
 import "swiper/css/zoom";
 // import Swiper core and required modules
 import { Navigation, Pagination, Lazy, Zoom } from 'swiper';
+import { useRouter } from 'next/router';
 
 const detail_data = {
   id: 1,
@@ -236,7 +237,15 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 export default function ChapterDetail() {
-  // const { data, detail_data, handleClickOpen, handleClose } = props;
+  const router = useRouter();
+  const { id } = router.query;
+  
+  const [chapter, setChapter] = useState([]);
+  useEffect(() => {
+    // filter detail data by chapter id 
+    const chapterData = detail_data?.chapters.filter(chapter => chapter.id === +id);
+    setChapter(chapterData);
+  }, [id]);
   
   const dispatch = useDispatch()
   const { hide_action } = useSelector(state => state.detail)
@@ -274,7 +283,7 @@ export default function ChapterDetail() {
   useEffect(() => {
     let next_chapter_index = 0
     detail_data?.chapters?.map((item, index) => {
-      if (item.id === 1) {
+      if (item.id === +id) {
         next_chapter_index = index + 1
       }
     })
@@ -283,36 +292,39 @@ export default function ChapterDetail() {
     }
     setNextChapterIndex(next_chapter_index)
     // get id of next chapter base on next_chapter_index
-    let next_chapter_id = detail_data?.chapters?.[next_chapter_index]?.id
+    let next_chapter_id = detail_data?.chapters[next_chapter_index]?.id
     setNextChapterId(next_chapter_id)
-  }, [detail_data])
+  }, [detail_data, id])
 
   // handle next chapter
-  const handleNextChapter = () => {
-    // close current chapter and then set time out 1s before open next chapter
-    // handleClose()
-    // setTimeout(() => {
-    //   handleClickOpen(nextChapterId)
-    //   dispatch(detail.setHideAction('HIDE_ACTION', false))
-    // }, 1000)
+  const [onUpdate, setOnUpdate] = useState(false)
+  const handleNextChapter = (nextId) => {
+    router.push(`/detail/chapter/${nextId}`)
+    setOnUpdate(true)
   }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Client-side-only code
-      document.body.style.cssText = `
-        width: 100%; 
-        position: fixed; 
-        overflow-y: scroll; 
-        -webkit-overflow-scrolling: touch; 
-        top: 0; 
-        left: 0;
-        height: 100%;
-        height: -moz-available;
-        height: -webkit-fill-available;
-        height: fill-available;
-        height: stretch;
-      `;
+      if (router.pathname === '/detail/chapter/[id]') {
+        document.body.style.cssText = `
+          width: 100%; 
+          position: fixed; 
+          overflow-y: scroll; 
+          -webkit-overflow-scrolling: touch; 
+          top: 0; 
+          left: 0;
+          height: 100%;
+          height: -moz-available;
+          height: -webkit-fill-available;
+          height: fill-available;
+          height: stretch;
+        `;
+      } else {
+        document.body.style.cssText = `
+          position: relative;
+        `;
+      }
     }
     if (typeof window !== "undefined") {
       // Client-side-only code
@@ -334,200 +346,210 @@ export default function ChapterDetail() {
 
   return (  
     <>
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            zIndex: '9',
-            background: 'rgba(29, 29, 33, 0.5)',
-            padding: '8px 0',
-            opacity: hide_action ? '0' : '1',
-            transition: 'ease-in-out .2s',
-            '@media screen and (min-width: 900px)': {
-              padding: '10px 40px',
-            }
-          }}
-        > 
-          <Box 
+      {
+        chapter?.length > 0 &&
+        <Container>
+          <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              cursor: 'pointer',
+              width: '100%',
               position: 'absolute',
-              left: '16px',
+              top: '0',
+              left: '0',
+              zIndex: '9',
+              background: 'rgba(29, 29, 33, 0.5)',
+              padding: '8px 0',
+              opacity: hide_action ? '0' : '1',
+              transition: 'ease-in-out .2s',
               '@media screen and (min-width: 900px)': {
-                left: '40px',
+                padding: '10px 40px',
               }
             }}
-          >
-            <Link href={`/detail/overview/1`} passHref>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="close"
-                sx={{
-                  color: '#FFF',
-                  padding: '8px',
-                  '@media screen and (min-width: 900px)': {
-                    padding: '8px',
-                  }
-                }}
-              >
-                <Close 
-                  sx={{
-                    fontSize: '1.5rem',
-                    // width: '40px',
-                    // height: '40px',
-                    '@media screen and (min-width: 900px)': {
-                      fontSize: '1.5rem',
-                    } 
-                  }}
-                />
-              </IconButton>
+          > 
+            <Box 
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                position: 'absolute',
+                left: '16px',
+                '@media screen and (min-width: 900px)': {
+                  left: '40px',
+                }
+              }}
+            >
+              <Link href={`/detail/overview/1`} passHref>
+                <a style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="close"
+                    sx={{
+                      color: '#FFF',
+                      padding: '8px',
+                      '@media screen and (min-width: 900px)': {
+                        padding: '8px',
+                      }
+                    }}
+                  >
+                    <Close 
+                      sx={{
+                        fontSize: '1.5rem',
+                        // width: '40px',
+                        // height: '40px',
+                        '@media screen and (min-width: 900px)': {
+                          fontSize: '1.5rem',
+                        } 
+                      }}
+                    />
+                  </IconButton>
+                  <Typography 
+                    sx={{ 
+                      ml: 2, 
+                      flex: 1, 
+                      color: '#FFF', 
+                      marginLeft: '6px',
+                      display: 'none',
+                      '@media screen and (min-width: 900px)': {
+                        display: 'block',
+                      } 
+                    }} 
+                    variant="h5" 
+                    component="div"
+                  >
+                    Close
+                  </Typography>
+                </a>
+              </Link>
+            </Box>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+            }}>
               <Typography 
                 sx={{ 
-                  ml: 2, 
                   flex: 1, 
-                  color: '#FFF', 
-                  marginLeft: '6px',
-                  display: 'none',
-                  '@media screen and (min-width: 900px)': {
-                    display: 'block',
-                  } 
+                  color: '#FFF',
                 }} 
                 variant="h5" 
-                component="div"
+                component="h2"
               >
-                Close
+                {chapter[0]?.title}
               </Typography>
-            </Link>
+              <Typography 
+                sx={{ 
+                  flex: 1, 
+                  color: '#FFF',
+                }} 
+                variant="caption" 
+                component="p"
+              >
+                {chapter[0]?.sub_title}
+              </Typography>
+            </Box>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-          }}>
-            <Typography 
-              sx={{ 
-                flex: 1, 
-                color: '#FFF',
-              }} 
-              variant="h5" 
-              component="h2"
-            >
-              Title
-            </Typography>
-            <Typography 
-              sx={{ 
-                flex: 1, 
-                color: '#FFF',
-              }} 
-              variant="caption" 
-              component="p"
-            >
-              Sub Title
-            </Typography>
-          </Box>
-        </Box>
-        <Swiper
-          modules={[Navigation, Pagination, Zoom, Lazy]}
-          navigation={hide_action ? false : true}
-          pagination={
-            hide_action ? false : {
-            type: "fraction",
-          }}
-          spaceBetween={50}
-          slidesPerView={1}
-          zoom={true}
-          lazy={false}
-          // onSlideChange={() => console.log('slide change')}
-          // onSwiper={(swiper) => swiper && swiper.slideTo(0, 1, false)}
-        >
-          {
-            detail_data?.chapters[0]?.image?.map((x, i) => (
-              <SwiperSlide key={i} onClick={() => handleHideAction()}>
-                <div className='img-wrap swiper-zoom-container'>
-                  <img src={x} alt="detail" />
-                </div>
-                {/* <div className='img-wrap'>
-                  <Image src={x} alt='detail' layout="fill" objectFit="contain" />
-                </div> */}
-              </SwiperSlide>
-              ))
-          }
-          <SwiperSlide onClick={() => handleHideAction()}>
-            <div className='img-wrap'>
-              <div className='coffee-wrap'>
-                <div className='coffee'>
-                  <img className='smile-icon' src="/smile.svg" alt="smile icon"/>
-                  <Typography variant='h4' component='h4' sx={{color: '#FFF', mb: 3}}>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</Typography>
-                  {/* <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p> */}
-                  <div className='btn-wrap'>
-                    <Link href={`/coffee`} passHref>
-                      <Button 
-                        variant="contained" 
-                        color="light" 
-                        sx={{
-                          color: theme.palette.secondary.main, 
-                          width: 'fit-content',
-                        }} 
-                        size="large"
-                        component="a"
-                        startIcon={<Coffee />}
-                      >
-                        Coffee ဖိုးပေးမယ်
-                      </Button>
-                    </Link>
-                    <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, minHeight: {md: '52px', xs: '44px'}}}>
-                      <SpeedDial
-                        ariaLabel="SpeedDial basic example"
-                        sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%'}}
-                        icon={<Share />}
-                        className="speed-dial-white"
-                      >
-                        <SpeedDialAction
-                          icon={<FileCopy />}
-                          onClick={() => handleCopy()}
-                          key="Copy Link"
-                          tooltipTitle="Copy Link"
-                          tooltipOpen
-                        />
-                        <SpeedDialAction
-                          icon={<Facebook />}
-                          onClick={() => console.log('You clicked Share')}
-                          key="Facebook"
-                          tooltipTitle="Facebook"
-                          tooltipOpen
-                        />
-                      </SpeedDial>
-                    </Box>
-                    {
-                      nextChapterIndex !== null &&
-                      nextChapterIndex > 0 &&
-                      <Button 
-                        variant='outlined' 
-                        className='outlined-white' 
-                        size="large" 
-                        fullWidth
-                        startIcon={<SkipNext />}
-                        onClick={() => handleNextChapter()}
-                      >
-                        နောက်တစ်ပိုင်း
-                      </Button>
-                    }
+          <Swiper
+            modules={[Navigation, Pagination, Zoom, Lazy]}
+            navigation={hide_action ? false : true}
+            pagination={
+              hide_action ? false : {
+              type: "fraction",
+            }}
+            spaceBetween={50}
+            slidesPerView={1}
+            zoom={true}
+            lazy={false}
+            onUpdate={(swiper) => {
+              onUpdate && swiper.slideTo(0, 1, true) && dispatch(detail.setHideAction('HIDE_ACTION', false))
+              setOnUpdate(false)
+            }}
+          >          
+            {
+              // filter chapter by id
+              chapter[0]?.image?.map((x, i) => (
+                <SwiperSlide key={i} onClick={() => handleHideAction()}>
+                  <div className='img-wrap swiper-zoom-container'>
+                    <img src={x} alt={x} />
+                  </div>
+                  {/* <div className='img-wrap'>
+                    <Image src={x} alt='detail' layout="fill" objectFit="contain" />
+                  </div> */}
+                </SwiperSlide>
+                ))
+            }
+            <SwiperSlide onClick={() => handleHideAction()}>
+              <div className='img-wrap'>
+                <div className='coffee-wrap'>
+                  <div className='coffee'>
+                    <img className='smile-icon' src="/smile.svg" alt="smile icon"/>
+                    <Typography variant='h4' component='h4' sx={{color: '#FFF', mb: 3}}>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</Typography>
+                    {/* <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p> */}
+                    <div className='btn-wrap'>
+                      <Link href={`/coffee`} passHref>
+                        <Button 
+                          variant="contained" 
+                          color="light" 
+                          sx={{
+                            color: theme.palette.secondary.main, 
+                            width: 'fit-content',
+                          }} 
+                          size="large"
+                          component="a"
+                          startIcon={<Coffee />}
+                        >
+                          Coffee ဖိုးပေးမယ်
+                        </Button>
+                      </Link>
+                      <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, minHeight: {md: '52px', xs: '44px'}}}>
+                        <SpeedDial
+                          ariaLabel="SpeedDial basic example"
+                          sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%'}}
+                          icon={<Share />}
+                          className="speed-dial-white"
+                        >
+                          <SpeedDialAction
+                            icon={<FileCopy />}
+                            onClick={() => handleCopy()}
+                            key="Copy Link"
+                            tooltipTitle="Copy Link"
+                            tooltipOpen
+                          />
+                          <SpeedDialAction
+                            icon={<Facebook />}
+                            onClick={() => console.log('You clicked Share')}
+                            key="Facebook"
+                            tooltipTitle="Facebook"
+                            tooltipOpen
+                          />
+                        </SpeedDial>
+                      </Box>
+                      {
+                        nextChapterIndex !== null &&
+                        nextChapterIndex > 0 &&
+                        // <Link href={`/detail/chapter/${nextChapterId}`} passHref>
+                          <Button 
+                            variant='outlined' 
+                            className='outlined-white' 
+                            size="large" 
+                            fullWidth
+                            startIcon={<SkipNext />}
+                            onClick={() => handleNextChapter(nextChapterId)}
+                          >
+                            နောက်တစ်ပိုင်း
+                          </Button>
+                        // </Link>
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>         
-          </SwiperSlide>
-        </Swiper>
-      </Container>
+              </div>         
+            </SwiperSlide>
+          </Swiper>
+        </Container>
+      }
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={open}

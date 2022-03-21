@@ -144,6 +144,7 @@ export default function ElevateAppBar(props) {
   const dispatch = useDispatch();
   const { recentData } = useSelector(state => state.recent);
   const router = useRouter();
+  
   // reverse the recent data to show the latest first
   const recentDataReversed = recentData.slice().reverse();
   // handle feedback dialog 

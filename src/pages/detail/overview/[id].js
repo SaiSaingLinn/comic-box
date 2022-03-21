@@ -116,9 +116,9 @@ export default function OverviewDetail() {
 
   return (
     <>
-      <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
-      <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} />
-      <ChapterList data={detail_data} handleClickOpen={handleClickOpen} />
+      <DetailInfo data={detail_data} />
+      {/* <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} /> */}
+      <ChapterList data={detail_data} />
       <CommentList />
       <Box component="section" sx={{mt: 5, mb: 5}}>
         <Container>

@@ -105,9 +105,11 @@ const HomeBanner = (props) => {
     autoplay: true,
     swipeToSlide: true,
     autoplaySpeed: 5000,
-    speed: 1000,
+    speed: 100,
     infinite: true,
     touchThreshold: 50,
+    easing: "ease-in-out",
+    useCSS: true,
     responsive: [
       {
         breakpoint: 1400,
@@ -139,7 +141,7 @@ const HomeBanner = (props) => {
                         width: '60%',
                       }
                     }}>
-                      <Link href={`/detail/1`} passHref>
+                      <Link href={`/detail/overview/1`} passHref>
                         <a>
                           <Image src={x?.image} width={560} height={400} layout="responsive" alt={x?.title} />
                         </a>
@@ -160,13 +162,13 @@ const HomeBanner = (props) => {
                       }
                     }}>
                       <Typography variant="h5" component="h5" sx={{color: '#8C8C96', mb: {md: 2, xs: 1}}}>{x?.status}</Typography>
-                      <Link href={`/detail/1`} passHref>
+                      <Link href={`/detail/overview/1`} passHref>
                         <a>
                           <Typography variant="h3" component="h1" sx={{mb: {md: 2, xs: 1}, color: '#FFF'}}>{x?.title}</Typography>
                         </a>
                       </Link>
                       <Typography variant="p" component="p" sx={{color: theme.palette.primary.main, mb: {md: 3, xs: 2}}}>{x?.desc}</Typography>
-                      <Link href={`/detail/1`} passHref>
+                      <Link href={`/detail/overview/1`} passHref>
                         <Button 
                           variant="contained" 
                           color="light" 

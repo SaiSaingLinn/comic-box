@@ -21,6 +21,7 @@ import {
   Share, 
   FileCopy 
 } from '@mui/icons-material';
+import Link from 'next/link';
 
 const Desc = styled("div")(({ theme }) => ({
   '.my-anchor-css-class': {
@@ -34,7 +35,7 @@ const actions = [
 ];
 
 export default function DetailInfo(props) {
-  const { data, handleClickOpen } = props;
+  const { data } = props;
 
   // toast alert 
   const [toast, setToast] = useState({
@@ -171,15 +172,15 @@ export default function DetailInfo(props) {
               display: {sm: 'block', xs: 'none'},
             }}>
               <Stack direction="row" spacing={2}>
-                <Button 
-                  variant="contained" 
-                  startIcon={<PlayCircleOutline />}
-                  onClick={() => {
-                    handleClickOpen(1);
-                  }}
-                >                      
-                  အခုဖတ်မယ်
-                </Button>
+                <Link href={`/detail/chapter/1`}>
+                  <Button 
+                    variant="contained" 
+                    startIcon={<PlayCircleOutline />}
+                    component="a"
+                  >                      
+                    အခုဖတ်မယ်
+                  </Button>
+                </Link>
                 <Box sx={{transform: 'translateZ(0px)', flexGrow: 1 }}>
                   <SpeedDial
                     ariaLabel="SpeedDial basic example"
@@ -234,16 +235,16 @@ export default function DetailInfo(props) {
           display: {sm: 'none', xs: 'block'},
         }}>
           <Stack direction="row" spacing={2}>
-            <Button 
-              variant="contained" 
-              startIcon={<PlayCircleOutline />}
-              fullWidth
-              onClick={() => {
-                handleClickOpen(1);
-              }}
-            >                      
-              အခုဖတ်မယ်
-            </Button>
+            <Link href={`/detail/chapter/1`}>
+              <Button 
+                variant="contained" 
+                startIcon={<PlayCircleOutline />}
+                fullWidth
+                component="a"
+              >                      
+                အခုဖတ်မယ်
+              </Button>
+            </Link>
             <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, width: '100%' }}>
               <SpeedDial
                 ariaLabel="SpeedDial basic example"

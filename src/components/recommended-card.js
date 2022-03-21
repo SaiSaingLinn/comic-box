@@ -20,7 +20,7 @@ export default function RecommendedCard(props) {
     <Grid item>
       <Card sx={{boxShadow: 'none'}}>
         <CardActionArea>
-          <NextLink href={`/detail/1`} passHref>
+          <NextLink href={`/detail/overview/1`} passHref>
             <Link underline="none">
               <Box
                 sx={{
