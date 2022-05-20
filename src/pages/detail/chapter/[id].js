@@ -32,9 +32,12 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import "swiper/css/lazy";
 import "swiper/css/zoom";
+import "swiper/css/thumbs";
+import "swiper/css/free-mode";
 // import Swiper core and required modules
-import { Navigation, Pagination, Lazy, Zoom } from 'swiper';
+import { Navigation, Pagination, Lazy, Zoom, Thumbs, FreeMode } from 'swiper';
 import { useRouter } from 'next/router';
+import { isMobile } from 'react-device-detect';
 
 const detail_data = {
   id: 1,
@@ -163,74 +166,105 @@ const Container = styled('div')(({ theme }) => ({
         alignItems: 'center',
       },
     },
-  },
-  '.img-wrap': {
-    position: 'relative', 
-    width: '100%',
-    maxWidth: '1220px',
-    margin: '0 auto',
-    textAlign: 'center',
-    '& img': {
-      height: '100vh',
-      maxHeight: 'calc(100vh)',
-      objectFit: 'contain',
+    '.img-wrap': {
+      position: 'relative', 
       width: '100%',
-    },
-    '.coffee-wrap': {
-      display: 'flex',
-      alignItems: 'center',
-      height: '100%',   
-      '.coffee': {
-        background: theme.palette.primary.main,
+      maxWidth: '1220px',
+      margin: '0 auto',
+      textAlign: 'center',
+      '& img': {
+        height: '100vh',
+        maxHeight: 'calc(100vh)',
+        objectFit: 'contain',
         width: '100%',
-        margin: '0 auto',
-        textAlign: 'center',
-        maxWidth: '620px',
-        minHeight: '460px',
-        padding: '64px',
+      },
+      '.coffee-wrap': {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: '8px',
-        [theme.breakpoints.down('sm')]: {
-          maxWidth: '312px',
-          minHeight: '336px',
-          padding: '24px',
-        },            
-        '.smile-icon': {
-          width: '64px',
-          height: '64px',
-          marginBottom: '24px',
-          [theme.breakpoints.down('sm')]: {
-            width: '48px',
-            height: '48px',
-            marginBottom: '16px',
-          },
-        },
-        '.desc': {
-          color: '#FFF',
-          marginBottom: '24px',
-          [theme.breakpoints.down('sm')]: {
-            marginBottom: '16px',
-          },
-        },
-        '.btn-wrap': {
+        height: '100%',   
+        '.coffee': {
+          background: theme.palette.primary.main,
+          width: '100%',
+          margin: '0 auto',
+          textAlign: 'center',
+          maxWidth: '620px',
+          minHeight: '460px',
+          padding: '64px',
           display: 'flex',
           flexDirection: 'column',
-          'a': {
-            marginBottom: '12px',
-            '&:last-child': {
-              marginBottom: '0'
-            },
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '8px',
+          [theme.breakpoints.down('sm')]: {
+            maxWidth: '312px',
+            minHeight: '336px',
+            padding: '24px',
+          },            
+          '.smile-icon': {
+            width: '64px',
+            height: '64px',
+            marginBottom: '24px',
             [theme.breakpoints.down('sm')]: {
+              width: '48px',
+              height: '48px',
+              marginBottom: '16px',
+            },
+          },
+          '.desc': {
+            color: '#FFF',
+            marginBottom: '24px',
+            [theme.breakpoints.down('sm')]: {
+              marginBottom: '16px',
+            },
+          },
+          '.btn-wrap': {
+            display: 'flex',
+            flexDirection: 'column',
+            'a': {
               marginBottom: '12px',
               '&:last-child': {
                 marginBottom: '0'
               },
-            },
+              [theme.breakpoints.down('sm')]: {
+                marginBottom: '12px',
+                '&:last-child': {
+                  marginBottom: '0'
+                },
+              },
+            }
           }
-        }
+        },
+      },
+    },
+  },
+  '.mySwiper': {
+    height: '72px',
+    width: '100%',
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
+    [theme.breakpoints.down('sm')]: {
+      height: '52px',
+    },
+    '.swiper-slide': {
+      opacity: '0.4',
+      transition: 'all 0.3s',
+      '&:hover': {
+        opacity: '1',
+      },
+    },
+    '.swiper-slide-thumb-active': {
+      opacity: '1',
+    },
+    '.img-wrap': {
+      position: 'relative', 
+      width: '100%',
+      margin: '0 auto',
+      textAlign: 'center',
+      '& img': {
+        height: '100%',
+        objectFit: 'cover',
+        width: '100%',
       },
     },
   },
@@ -241,6 +275,7 @@ export default function ChapterDetail() {
   const { id } = router.query;
   
   const [chapter, setChapter] = useState([]);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   useEffect(() => {
     // filter detail data by chapter id 
     const chapterData = detail_data?.chapters.filter(chapter => chapter.id === +id);
@@ -452,7 +487,7 @@ export default function ChapterDetail() {
             </Box>
           </Box>
           <Swiper
-            modules={[Navigation, Pagination, Zoom, Lazy]}
+            modules={[Navigation, Pagination, Zoom, Lazy, FreeMode, Thumbs]}
             navigation={hide_action ? false : true}
             pagination={
               hide_action ? false : {
@@ -466,6 +501,7 @@ export default function ChapterDetail() {
               onUpdate && swiper.slideTo(0, 1, true) && dispatch(detail.setHideAction('HIDE_ACTION', false))
               setOnUpdate(false)
             }}
+            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
           >          
             {
               // filter chapter by id
@@ -547,6 +583,25 @@ export default function ChapterDetail() {
                 </div>
               </div>         
             </SwiperSlide>
+          </Swiper>
+          <Swiper
+            onSwiper={setThumbsSwiper}
+            spaceBetween={10}
+            slidesPerView={isMobile ? 5 : 10}
+            freeMode={true}
+            watchSlidesProgress={true}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="mySwiper"
+            style={hide_action ? {opacity: 0} : {opacity: '1'}}
+          >
+            {
+              // filter chapter by id
+              chapter[0]?.image?.map((x, i) => (
+                <SwiperSlide key={i} className="img-wrap">
+                  <img src={x} alt={x} />
+                </SwiperSlide>
+                ))
+            }
           </Swiper>
         </Container>
       }
