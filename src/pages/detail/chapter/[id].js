@@ -151,13 +151,18 @@ const Container = styled('div')(({ theme }) => ({
     '.swiper-pagination': {
       color: '#FFF',
       fontWeight: '800',
-      background: 'rgba(29, 29, 33, 0.5)',
       width: 'auto',
-      left: '50%',
-      transform: 'translateX(-50%)',
       padding: '5px 10px',
       borderRadius: '8px',
       fontSize: '14px',
+      top: "18px",
+      right: "30px",
+      background: "none",
+      left: "auto",
+      [theme.breakpoints.down('sm')]: {
+        right: '5px',
+        top: '10px',
+      },
     },
     '.swiper-wrapper': {
       '.swiper-slide': {
