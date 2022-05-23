@@ -259,7 +259,7 @@ const Container = styled('div')(({ theme }) => ({
       opacity: '0.4',
       transition: 'all 0.3s',
       '&:hover': {
-        opacity: '1',
+        cursor: 'pointer',
       },
     },
     '.swiper-slide-thumb-active': {
