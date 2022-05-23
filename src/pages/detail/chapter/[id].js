@@ -151,17 +151,21 @@ const Container = styled('div')(({ theme }) => ({
     '.swiper-pagination': {
       color: '#FFF',
       fontWeight: '800',
+      background: 'rgba(29, 29, 33, 0.5)',
       width: 'auto',
+      left: '50%',
+      transform: 'translateX(-50%)',
       padding: '5px 10px',
       borderRadius: '8px',
       fontSize: '14px',
-      top: "18px",
-      right: "30px",
-      background: "none",
-      left: "auto",
+      bottom: '82px',
+      // top: "18px",
+      // right: "30px",
+      // background: "none",
+      // left: "auto",
       [theme.breakpoints.down('sm')]: {
-        right: '5px',
-        top: '10px',
+        bottom: '42px',
+        fontSize: '12px',
       },
     },
     '.swiper-wrapper': {
@@ -249,7 +253,7 @@ const Container = styled('div')(({ theme }) => ({
     bottom: '0',
     left: '0',
     [theme.breakpoints.down('sm')]: {
-      height: '52px',
+      height: '38px',
     },
     '.swiper-slide': {
       opacity: '0.4',
@@ -591,8 +595,8 @@ export default function ChapterDetail() {
           </Swiper>
           <Swiper
             onSwiper={setThumbsSwiper}
-            spaceBetween={10}
-            slidesPerView={isMobile ? 5 : 10}
+            spaceBetween={5}
+            slidesPerView={isMobile ? 8 : 10}
             freeMode={true}
             watchSlidesProgress={true}
             modules={[FreeMode, Navigation, Thumbs]}
