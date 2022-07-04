@@ -10,7 +10,7 @@ import 'slick-carousel/slick/slick.css'
 
 const Layout = ({ children }, showAfterMs = 250, options = { minimum: 0.01, speed: 500 }) => {
   const router = useRouter();
-  const showLayout = router.pathname === "/detail/chapter/[id]" ? false : true;
+  const showLayout = router.pathname === "/detail/chapter/[slug]" ? false : true;
   const timer = useRef(null);
 
   const routeChangeStart = () => {

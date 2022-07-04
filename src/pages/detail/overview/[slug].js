@@ -83,7 +83,9 @@ const detail_data = {
   ]
 }
 
-export default function OverviewDetail() {
+export default function OverviewDetail(props) {
+  const { posts } = props;
+  
   const [chapterData, setChapterData] = useState(null)
   const [state, setState] = useState({
     open: false,
@@ -116,9 +118,9 @@ export default function OverviewDetail() {
 
   return (
     <>
-      <DetailInfo data={detail_data} />
+      <DetailInfo data={posts} />
       {/* <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} /> */}
-      <ChapterList data={detail_data} />
+      <ChapterList data={posts} />
       <CommentList />
       <Box component="section" sx={{mt: 5, mb: 5}}>
         <Container>
@@ -128,4 +130,39 @@ export default function OverviewDetail() {
       <RecommendedList />
     </>
   );
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps({ params }) {
+  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/book/${params?.slug}`);
+  const posts = await res.json()
+  return {
+    props: {
+      posts,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 60 seconds
+    revalidate: 60, // In seconds
+  }
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// the path has not been generated.
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/books/list?perPage=8&page=1`)
+  const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts?.data?.map((post) => ({
+    params: { slug: post?.slug },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: 'blocking' }
 }

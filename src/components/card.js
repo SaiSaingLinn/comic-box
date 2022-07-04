@@ -19,11 +19,11 @@ export default function MediaCard(props) {
   return (
     <>
       {
-        data.map(item => (
+        data?.data?.map(item => (
           <Grid item xs={12} md={6} key={item?.id}>
             <Card>
               <CardActionArea>
-                <NextLink href={`/detail/overview/1`} passHref>
+                <NextLink href={`/detail/overview/${item?.slug}`} passHref>
                   <Link underline="none">
                     <Box
                       sx={{
@@ -59,7 +59,7 @@ export default function MediaCard(props) {
                       }                      
                       <Box sx={{width: '30%'}}>
                         <Image
-                          src={item?.image}
+                          src={item?.cover}
                           alt={item?.title}
                           layout="responsive"
                           width={160}
@@ -85,21 +85,25 @@ export default function MediaCard(props) {
                             component='p'
                           />
                         </Typography>
-                        <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
-                          <Typography 
-                            variant="body2" 
-                            color="textSecondary" 
-                            component="p" 
-                            sx={{
-                              fontWeight: '800', 
-                              marginRight: '5px',
-                              color: theme.palette.text.main,                              
-                            }}
-                          >
-                            {item?.rating}
-                          </Typography>
-                          <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
-                        </Box>
+                        {
+                          item?.rating && (
+                          <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 1}}}>
+                            <Typography 
+                              variant="body2" 
+                              color="textSecondary" 
+                              component="p" 
+                              sx={{
+                                fontWeight: '800', 
+                                marginRight: '5px',
+                                color: theme.palette.text.main,                              
+                              }}
+                            >
+                              {item?.rating}
+                            </Typography>
+                            <Rating name="half-rating-read" value={item?.rating} precision={0.5} readOnly size="small" />
+                          </Box>
+                          )
+                        }
                         <Typography variant="paragraph" component="h6" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
                           <LinesEllipsis
                             text={item?.desc}

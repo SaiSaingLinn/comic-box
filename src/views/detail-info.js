@@ -71,7 +71,7 @@ export default function DetailInfo(props) {
         >                      
           <Box sx={{width: {md: '30%', xs: '40%'}}}>
             <Image
-              src={data?.image}
+              src={data?.cover}
               alt={data?.title}
               layout="responsive"
               width={160}
@@ -119,25 +119,29 @@ export default function DetailInfo(props) {
                 component='span'
               />
             </Typography>
-            <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 2}}}>
-              <Typography 
-                variant="body2" 
-                color="textSecondary" 
-                component="p" 
-                sx={{
-                  fontWeight: '800', 
-                  marginRight: '5px',
-                  color: theme.palette.text.main,                              
-                }}
-              >
-                {data?.rating}
-              </Typography>
-              <Rating name="half-rating-read" value={data?.rating} precision={0.5} readOnly size="small" />
-            </Box>
+            {
+              data?.rating && (
+                <Box sx={{display: 'flex', alignItems: 'center', mb: {md: 2, xs: 2}}}>
+                  <Typography 
+                    variant="body2" 
+                    color="textSecondary" 
+                    component="p" 
+                    sx={{
+                      fontWeight: '800', 
+                      marginRight: '5px',
+                      color: theme.palette.text.main,                              
+                    }}
+                  >
+                    {data?.rating}
+                  </Typography>
+                  <Rating name="half-rating-read" value={data?.rating} precision={0.5} readOnly size="small" />
+                </Box>
+              )
+            }
             <Box sx={{
-                mb: {md: 2, xs: 1},
-                display: {sm: 'block', xs: 'none'},
-              }}>
+              mb: {md: 2, xs: 1},
+              display: {sm: 'block', xs: 'none'},
+            }}>
               <Desc>
                 <Typography variant="paragraph" component="div" color={theme.palette.text.main} sx={{lineHeight: '1.7'}}>
                   <ShowMoreText
@@ -160,7 +164,7 @@ export default function DetailInfo(props) {
             <Box sx={{mb: {md: 3, xs: 2}}}>
               <Stack direction="row" spacing={2} sx={{mb: {md: 1, xs: 0.5}}}>              
                 <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '800', color: theme.palette.text.main, minWidth: {md: '60px', xs: '50px'}}}>Aurthor:</Typography>
-                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '400', color: theme.palette.text.main}}>{data?.aurthor}</Typography>
+                <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '400', color: theme.palette.text.main}}>{data?.author}</Typography>
               </Stack>
               <Stack direction="row" spacing={2}>              
                 <Typography variant="body2" color="textSecondary" component="p" sx={{fontWeight: '800', color: theme.palette.text.main, minWidth: {md: '60px', xs: '50px'}}}>Artist:</Typography>
@@ -172,7 +176,7 @@ export default function DetailInfo(props) {
               display: {sm: 'block', xs: 'none'},
             }}>
               <Stack direction="row" spacing={2}>
-                <Link href={`/detail/chapter/1`}>
+                <Link href={`/detail/chapter/${data?.slug}?name=${data?.chapters[0]?.slug}`}>
                   <Button 
                     variant="contained" 
                     startIcon={<PlayCircleOutline />}

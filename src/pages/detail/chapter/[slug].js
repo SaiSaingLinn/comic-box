@@ -279,17 +279,18 @@ const Container = styled('div')(({ theme }) => ({
   },
 }));
 
-export default function ChapterDetail() {
+export default function ChapterDetail(props) {
+  const { posts } = props;
   const router = useRouter();
-  const { id } = router.query;
+  const { slug, name } = router.query;
   
   const [chapter, setChapter] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   useEffect(() => {
-    // filter detail data by chapter id 
-    const chapterData = detail_data?.chapters.filter(chapter => chapter.id === +id);
+    // filter detail data by chapter slug 
+    const chapterData = posts?.chapters?.filter(chapter => chapter.slug === name);
     setChapter(chapterData);
-  }, [id]);
+  }, [name]);
   
   const dispatch = useDispatch()
   const { hide_action } = useSelector(state => state.detail)
@@ -323,27 +324,27 @@ export default function ChapterDetail() {
 
   // get next chapter index if exist
   const [nextChapterIndex, setNextChapterIndex] = useState(null)
-  const [nextChapterId, setNextChapterId] = useState(null)
+  const [nextChapterSlug, setNextChapterSlug] = useState(null)
   useEffect(() => {
     let next_chapter_index = 0
-    detail_data?.chapters?.map((item, index) => {
-      if (item.id === +id) {
+    posts?.chapters?.map((item, index) => {
+      if (item?.slug === name) {
         next_chapter_index = index + 1
       }
     })
-    if (next_chapter_index === detail_data?.chapters?.length) {
+    if (next_chapter_index === posts?.chapters?.length) {
       next_chapter_index = 0
     }
     setNextChapterIndex(next_chapter_index)
     // get id of next chapter base on next_chapter_index
-    let next_chapter_id = detail_data?.chapters[next_chapter_index]?.id
-    setNextChapterId(next_chapter_id)
-  }, [detail_data, id])
+    let next_chapter_slug = posts?.chapters[next_chapter_index]?.slug
+    setNextChapterSlug(next_chapter_slug)
+  }, [posts, name])
 
   // handle next chapter
   const [onUpdate, setOnUpdate] = useState(false)
-  const handleNextChapter = (nextId) => {
-    router.push(`/detail/chapter/${nextId}`)
+  const handleNextChapter = (nextSlug) => {
+    router.push(`/detail/chapter/${slug}?name=${nextSlug}`)
     setOnUpdate(true)
   }
 
@@ -423,7 +424,7 @@ export default function ChapterDetail() {
                 }
               }}
             >
-              <Link href={`/detail/overview/1`} passHref>
+              <Link href={`/detail/overview/${posts?.slug}`} passHref>
                 <a style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
                   <IconButton
                     edge="start"
@@ -477,6 +478,10 @@ export default function ChapterDetail() {
                 sx={{ 
                   flex: 1, 
                   color: '#FFF',
+                  whiteSpace: "nowrap", 
+                  width: "150px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis", 
                 }} 
                 variant="h5" 
                 component="h2"
@@ -487,6 +492,10 @@ export default function ChapterDetail() {
                 sx={{ 
                   flex: 1, 
                   color: '#FFF',
+                  whiteSpace: "nowrap", 
+                  width: "150px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis", 
                 }} 
                 variant="caption" 
                 component="p"
@@ -514,7 +523,7 @@ export default function ChapterDetail() {
           >          
             {
               // filter chapter by id
-              chapter[0]?.image?.map((x, i) => (
+              chapter[0]?.pages?.map((x, i) => (
                 <SwiperSlide key={i} onClick={() => handleHideAction()}>
                   <div className='img-wrap swiper-zoom-container'>
                     <img src={x} alt={x} />
@@ -574,14 +583,14 @@ export default function ChapterDetail() {
                       {
                         nextChapterIndex !== null &&
                         nextChapterIndex > 0 &&
-                        // <Link href={`/detail/chapter/${nextChapterId}`} passHref>
+                        // <Link href={`/detail/chapter/${nextChapterSlug}`} passHref>
                           <Button 
                             variant='outlined' 
                             className='outlined-white' 
                             size="large" 
                             fullWidth
                             startIcon={<SkipNext />}
-                            onClick={() => handleNextChapter(nextChapterId)}
+                            onClick={() => handleNextChapter(nextChapterSlug)}
                           >
                             နောက်တစ်ပိုင်း
                           </Button>
@@ -593,25 +602,28 @@ export default function ChapterDetail() {
               </div>         
             </SwiperSlide>
           </Swiper>
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={5}
-            slidesPerView={isMobile ? 8 : 10}
-            freeMode={true}
-            watchSlidesProgress={true}
-            modules={[FreeMode, Navigation, Thumbs]}
-            className="mySwiper"
-            style={hide_action ? {opacity: 0} : {opacity: '1'}}
-          >
-            {
-              // filter chapter by id
-              chapter[0]?.image?.map((x, i) => (
-                <SwiperSlide key={i} className="img-wrap">
-                  <img src={x} alt={x} />
-                </SwiperSlide>
-                ))
-            }
-          </Swiper>
+          {
+            chapter[0]?.pages?.length >= 8 &&
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={5}
+              slidesPerView={isMobile ? 8 : 10}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className="mySwiper"
+              style={hide_action ? {opacity: 0} : {opacity: '1'}}
+            >
+              {
+                // filter chapter by id
+                chapter[0]?.pages?.map((x, i) => (
+                  <SwiperSlide key={i} className="img-wrap">
+                    <img src={x} alt={x} />
+                  </SwiperSlide>
+                  ))
+              }
+            </Swiper>
+          }
         </Container>
       }
       <Snackbar
@@ -624,4 +636,39 @@ export default function ChapterDetail() {
       />
     </>
   );
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps({ params }) {
+  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/book/${params?.slug}`);
+  const posts = await res.json()
+  return {
+    props: {
+      posts,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 60 seconds
+    revalidate: 60, // In seconds
+  }
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// the path has not been generated.
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/books/list?perPage=8&page=1`)
+  const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts?.data?.map((post) => ({
+    params: { slug: post?.slug },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: 'blocking' }
 }

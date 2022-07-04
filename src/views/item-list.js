@@ -69,17 +69,21 @@ const listing_data = [
   },
 ]
 
-export default function ItemList() {
+export default function ItemList(props) {
+  const { data } = props;
   return (
     <Box component="section" sx={{mt: 5, mb: 5}}>
       <Container>
         <Typography variant="h3" component="h2" mb={3}>Fetaured Comics</Typography>
         <Grid container spacing={2}>
-          <MediaCard data={listing_data} />
+          <MediaCard data={data} />
         </Grid>
-        <Stack sx={{mt: 5, mb: 5}} justifyContent="center" direction="row">
-          <Pagination count={10} color="primary" variant="outlined" shape="rounded" />
-        </Stack>
+        {
+          data?.data?.length > 8 &&
+          <Stack sx={{mt: 5, mb: 5}} justifyContent="center" direction="row">
+            <Pagination count={10} color="primary" variant="outlined" shape="rounded" />
+          </Stack>
+        }
       </Container>
     </Box>
   );

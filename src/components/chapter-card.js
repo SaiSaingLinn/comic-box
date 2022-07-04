@@ -18,6 +18,7 @@ import { ArrowCircleRightOutlined } from '@mui/icons-material';
 
 export default function ChapterCard(props) {
   const { data } = props;
+  
   return (
     <>
       {
@@ -25,7 +26,7 @@ export default function ChapterCard(props) {
           <Grid item xs={12} md={6} key={item?.id}>
             <Card>
               <CardActionArea>
-                <NextLink href={`/detail/chapter/${item?.id}`} passHref>
+                <NextLink href={`/detail/chapter/${data?.slug}?name=${item?.slug}`} passHref>
                   <Box
                     sx={{
                       position: 'relative',
@@ -61,7 +62,7 @@ export default function ChapterCard(props) {
                     }                      
                     <Box sx={{width: '20%'}}>
                       <Image
-                        src={item?.cover_image}
+                        src={item?.pages[0]}
                         alt={item?.title}
                         layout="responsive"
                         width={160}
@@ -84,11 +85,31 @@ export default function ChapterCard(props) {
                         alignItems="center"
                       >
                         <Box>
-                          <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>                          
+                          {/* <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>                          
                             {item?.title}
+                          </Typography> */}
+                          <Typography gutterBottom variant="h5" component="h5" sx={{color: theme.palette.text.dark, mb: 1}}>
+                            <LinesEllipsis
+                              text={item?.title}
+                              maxLine='1'
+                              ellipsis='...'
+                              trimRight
+                              basedOn='letters'
+                              component='p'
+                            />
                           </Typography>
-                          <Typography gutterBottom variant="paragraph" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
+                          {/* <Typography gutterBottom variant="paragraph" component="p" sx={{color: theme.palette.text.main, mb: 1}}>                          
                             {item?.sub_title}
+                          </Typography> */}
+                          <Typography gutterBottom variant="paragraph" component="h6" sx={{color: theme.palette.text.main, mb: 1}}>
+                            <LinesEllipsis
+                              text={item?.sub_title}
+                              maxLine='1'
+                              ellipsis='...'
+                              trimRight
+                              basedOn='letters'
+                              component='p'
+                            />
                           </Typography>
                         </Box>
                         <Box>
