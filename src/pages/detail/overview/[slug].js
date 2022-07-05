@@ -109,20 +109,38 @@ export default function OverviewDetail(props) {
     // }
   };
 
+  const [stateOpen, setStateOpen] = useState({
+    bottom: false,
+    chapter: null,
+  });
+
+  const toggleDrawer = (anchor, open, id) => (event) => {
+    console.log(anchor, open)
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setStateOpen({ ...stateOpen, [anchor]: open, chapter: id });
+  };
+
   useEffect(() => {
-    let id = state.chapter; 
+    let id = stateOpen.chapter; 
     if (id) {
       let chapter_data = detail_data.chapters.find(chapter => chapter.id === id);
       setChapterData(chapter_data);
     }
-  }, [state.chapter])
+  }, [stateOpen.chapter])
 
   return (
     <>
-      <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
+      <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} toggleDrawer={toggleDrawer} />
       {/* <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} /> */}
-      <FullDrawerSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} />
-      <ChapterList data={detail_data} />
+      <FullDrawerSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} toggleDrawer={toggleDrawer} stateOpen={stateOpen} />
+      <ChapterList data={detail_data} toggleDrawer={toggleDrawer} stateOpen={stateOpen} />
       <CommentList />
       <Box component="section" sx={{mt: 5, mb: 5}}>
         <Container>

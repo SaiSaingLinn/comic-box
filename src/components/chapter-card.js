@@ -17,7 +17,7 @@ import LinesEllipsis from 'react-lines-ellipsis'
 import { ArrowCircleRightOutlined } from '@mui/icons-material';
 
 export default function ChapterCard(props) {
-  const { data } = props;
+  const { data, toggleDrawer, stateOpen } = props;
   
   return (
     <>
@@ -26,7 +26,7 @@ export default function ChapterCard(props) {
           <Grid item xs={12} md={6} key={item?.id}>
             <Card>
               <CardActionArea>
-                <NextLink href={`/detail/chapter/${data?.slug}?name=${item?.slug}`} passHref>
+                
                   <Box
                     sx={{
                       position: 'relative',
@@ -35,7 +35,7 @@ export default function ChapterCard(props) {
                       justifyContent: 'flex-start',
                       width: '100%',
                     }}
-                    component={'a'}
+                    onClick={toggleDrawer('bottom', true)}
                   >
                     {
                       item?.status && (
@@ -118,7 +118,7 @@ export default function ChapterCard(props) {
                       </Stack>
                     </CardContent>
                   </Box>
-                </NextLink>
+                
               </CardActionArea>
             </Card>
           </Grid>

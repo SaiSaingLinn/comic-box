@@ -35,7 +35,7 @@ const actions = [
 ];
 
 export default function DetailInfo(props) {
-  const { data, state, detail_data, handleClickOpen } = props;
+  const { data, state, detail_data, handleClickOpen, toggleDrawer } = props;
 
   // toast alert 
   const [toast, setToast] = useState({
@@ -188,9 +188,7 @@ export default function DetailInfo(props) {
                 <Button 
                   variant="contained" 
                   startIcon={<PlayCircleOutline />}
-                  onClick={() => {
-                    handleClickOpen(1);
-                  }}
+                  onClick={toggleDrawer('bottom', true, 1)}
                 >                      
                   အခုဖတ်မယ်
                 </Button>
@@ -261,9 +259,7 @@ export default function DetailInfo(props) {
             <Button 
               variant="contained" 
               startIcon={<PlayCircleOutline />}
-              onClick={() => {
-                handleClickOpen(1);
-              }}
+              onClick={toggleDrawer('bottom', true, 1)}
             >                      
               အခုဖတ်မယ်
             </Button>
