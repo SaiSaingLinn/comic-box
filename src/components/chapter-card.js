@@ -61,14 +61,14 @@ export default function ChapterCard(props) {
                       )
                     }                      
                     <Box sx={{width: '20%'}}>
-                      <Image
+                      {/* <Image
                         src={item?.pages[0]}
                         alt={item?.title}
                         layout="responsive"
                         width={160}
                         height={240}
                         priority
-                      />
+                      /> */}
                     </Box>
                     <CardContent 
                       sx={{

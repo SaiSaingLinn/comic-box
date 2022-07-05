@@ -144,8 +144,8 @@ export default function FullDialogSlider(props) {
             </Box>
           </Toolbar>
         </AppBar>
-        {/* <DetailSlider data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
-        <DetailSwiper data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+        <DetailSlider data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+        {/* <DetailSwiper data={data} detail_data={detail_data} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
       </Dialog>
     </Container>
   )

@@ -6,6 +6,7 @@ import CommentList from 'src/views/comment-list';
 import CoffeeCard from 'src/components/coffee-card';
 import { Box, Container } from '@mui/material';
 import RecommendedList from 'src/views/recommended-list';
+import FullDrawerSlider from 'src/views/full-drawer-slider';
 
 const detail_data = {
   id: 1,
@@ -94,18 +95,18 @@ export default function OverviewDetail(props) {
 
   const handleClickOpen = (id) => {
     setState({open: true, chapter: id});
-    if (typeof window !== "undefined") {
-      // Client-side-only code
-      document.body.style.cssText = "height: 100%; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch;";
-    }
+    // if (typeof window !== "undefined") {
+    //   // Client-side-only code
+    //   document.body.style.cssText = "height: 100%; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch;";
+    // }
   };
   
   const handleClose = () => {
     setState({open: false, chapter: null});
-    if (typeof window !== "undefined") {
-      // Client-side-only code
-      document.body.style.cssText = null;
-    }
+    // if (typeof window !== "undefined") {
+    //   // Client-side-only code
+    //   document.body.style.cssText = null;
+    // }
   };
 
   useEffect(() => {
@@ -118,9 +119,10 @@ export default function OverviewDetail(props) {
 
   return (
     <>
-      <DetailInfo data={posts} />
+      <DetailInfo data={detail_data} handleClickOpen={handleClickOpen} />
       {/* <FullDialogSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} /> */}
-      <ChapterList data={posts} />
+      <FullDrawerSlider data={chapterData} state={state} handleClose={handleClose} detail_data={detail_data} handleClickOpen={handleClickOpen} />
+      <ChapterList data={detail_data} />
       <CommentList />
       <Box component="section" sx={{mt: 5, mb: 5}}>
         <Container>

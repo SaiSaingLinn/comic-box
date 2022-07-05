@@ -35,7 +35,7 @@ const actions = [
 ];
 
 export default function DetailInfo(props) {
-  const { data } = props;
+  const { data, state, detail_data, handleClickOpen } = props;
 
   // toast alert 
   const [toast, setToast] = useState({
@@ -70,14 +70,14 @@ export default function DetailInfo(props) {
           }}
         >                      
           <Box sx={{width: {md: '30%', xs: '40%'}}}>
-            <Image
+            {/* <Image
               src={data?.cover}
               alt={data?.title}
               layout="responsive"
               width={160}
               height={240}
               priority
-            />
+            /> */}
           </Box>
           <Box 
             sx={{
@@ -176,7 +176,7 @@ export default function DetailInfo(props) {
               display: {sm: 'block', xs: 'none'},
             }}>
               <Stack direction="row" spacing={2}>
-                <Link href={`/detail/chapter/${data?.slug}?name=${data?.chapters[0]?.slug}`}>
+                {/* <Link href={`/detail/chapter/${data?.slug}?name=${data?.chapters[0]?.slug}`}>
                   <Button 
                     variant="contained" 
                     startIcon={<PlayCircleOutline />}
@@ -184,7 +184,16 @@ export default function DetailInfo(props) {
                   >                      
                     အခုဖတ်မယ်
                   </Button>
-                </Link>
+                </Link> */}
+                <Button 
+                  variant="contained" 
+                  startIcon={<PlayCircleOutline />}
+                  onClick={() => {
+                    handleClickOpen(1);
+                  }}
+                >                      
+                  အခုဖတ်မယ်
+                </Button>
                 <Box sx={{transform: 'translateZ(0px)', flexGrow: 1 }}>
                   <SpeedDial
                     ariaLabel="SpeedDial basic example"
@@ -239,7 +248,7 @@ export default function DetailInfo(props) {
           display: {sm: 'none', xs: 'block'},
         }}>
           <Stack direction="row" spacing={2}>
-            <Link href={`/detail/chapter/1`}>
+            {/* <Link href={`/detail/chapter/1`}>
               <Button 
                 variant="contained" 
                 startIcon={<PlayCircleOutline />}
@@ -248,7 +257,16 @@ export default function DetailInfo(props) {
               >                      
                 အခုဖတ်မယ်
               </Button>
-            </Link>
+            </Link> */}
+            <Button 
+              variant="contained" 
+              startIcon={<PlayCircleOutline />}
+              onClick={() => {
+                handleClickOpen(1);
+              }}
+            >                      
+              အခုဖတ်မယ်
+            </Button>
             <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, width: '100%' }}>
               <SpeedDial
                 ariaLabel="SpeedDial basic example"
