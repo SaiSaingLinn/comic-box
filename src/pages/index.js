@@ -8,7 +8,7 @@ export default function Index(props) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/books/list?perPage=8&page=1`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/books/list?perPage=8&page=1`)
   const posts = await res.json()
 
   return {

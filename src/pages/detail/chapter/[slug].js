@@ -642,7 +642,7 @@ export default function ChapterDetail(props) {
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }) {
-  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/book/${params?.slug}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book/${params?.slug}`);
   const posts = await res.json()
   return {
     props: {
@@ -659,7 +659,7 @@ export async function getStaticProps({ params }) {
 // It may be called again, on a serverless function, if
 // the path has not been generated.
 export async function getStaticPaths() {
-  const res = await fetch(`${process.env.NEXT_API_BASE_URL}/books/list?perPage=8&page=1`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/books/list?perPage=8&page=1`)
   const posts = await res.json()
 
   // Get the paths we want to pre-render based on posts
