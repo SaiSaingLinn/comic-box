@@ -177,7 +177,13 @@ export default function FullDrawerSlider(props) {
 
   const list = () => (
     <Box
-      sx={{ width: 'auto'}}
+      sx={{ 
+        width: 'auto', 
+        height: "100vh",
+        padding: "0",
+        margin: "0",
+        overflow: "hidden"
+      }}
       role="presentation"
       // onClick={toggleDrawer("bottom", false)}
       // onKeyDown={toggleDrawer("bottom", false)}
