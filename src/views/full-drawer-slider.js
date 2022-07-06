@@ -154,6 +154,7 @@ export default function FullDrawerSlider(props) {
       setLoaded(true)
     },
   })
+
   const [thumbnailRef] = useKeenSlider(
     {
       initial: 0,
@@ -165,6 +166,175 @@ export default function FullDrawerSlider(props) {
     [ThumbnailPlugin(instanceRef)]
   )
 
+  // toggleDrawer to false on scroll up and scroll down
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener('scroll', () => {
+        toggleDrawer("bottom", false)
+      })
+    }
+  }, [toggleDrawer])
+
+  const list = () => (
+    <Box
+      sx={{ width: 'auto'}}
+      role="presentation"
+      // onClick={toggleDrawer("bottom", false)}
+      // onKeyDown={toggleDrawer("bottom", false)}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          zIndex: '9',
+          background: 'rgba(29, 29, 33, 0.5)',
+          padding: '8px 0',
+          opacity: hide_action ? '0' : '1',
+          transition: 'ease-in-out .2s',
+          '@media screen and (min-width: 900px)': {
+            padding: '10px 40px',
+          }
+        }}
+      > 
+        <Box 
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            position: 'absolute',
+            left: '16px',
+            '@media screen and (min-width: 900px)': {
+              left: '40px',
+            }
+          }}
+        >
+          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}} onClick={toggleDrawer("bottom", false)}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="close"
+              sx={{
+                color: '#FFF',
+                padding: '8px',
+                '@media screen and (min-width: 900px)': {
+                  padding: '8px',
+                }
+              }}
+            >
+              <Close
+                sx={{
+                  fontSize: '1.5rem',
+                  // width: '40px',
+                  // height: '40px',
+                  '@media screen and (min-width: 900px)': {
+                    fontSize: '1.5rem',
+                  } 
+                }}
+              />
+            </IconButton>
+            <Typography
+              sx={{ 
+                ml: 2, 
+                flex: 1, 
+                color: '#FFF', 
+                marginLeft: '6px',
+                display: 'none',
+                '@media screen and (min-width: 900px)': {
+                  display: 'block',
+                } 
+              }} 
+              variant="h5" 
+              component="div"
+            >
+              Close
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+        }}>
+          <Typography 
+            sx={{ 
+              flex: 1, 
+              color: '#FFF',
+              whiteSpace: "nowrap", 
+              width: "150px",
+              overflow: "hidden",
+              textOverflow: "ellipsis", 
+            }} 
+            variant="h5" 
+            component="h2"
+          >
+            Title Title
+          </Typography>
+          <Typography 
+            sx={{ 
+              flex: 1, 
+              color: '#FFF',
+              whiteSpace: "nowrap", 
+              width: "150px",
+              overflow: "hidden",
+              textOverflow: "ellipsis", 
+            }} 
+            variant="caption" 
+            component="p"
+          >
+            Subtitle Subtitle
+          </Typography>
+        </Box>
+      </Box>
+      <SliderWrapper>
+        <div className="navigation-wrapper">
+          <div ref={sliderRef} className="keen-slider main-slide">
+            {
+              data?.image?.map((item, index) => (
+                <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
+                  <img src={item} />
+                </div>
+              ))
+            }
+          </div>
+          {loaded && instanceRef.current && (
+            <>
+              <Arrow
+                left
+                onClick={(e) =>
+                  e.stopPropagation() || instanceRef.current?.prev()
+                }
+                disabled={currentSlide === 0}
+              />
+              <Arrow
+                onClick={(e) =>
+                  e.stopPropagation() || instanceRef.current?.next()
+                }
+                disabled={
+                  currentSlide ===
+                  instanceRef.current.track.details.slides.length - 1
+                }
+              />
+            </>
+          )}
+        </div>
+        <div ref={thumbnailRef} className="keen-slider thumbnail">
+          {
+            data?.image?.map((item, index) => (
+              <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
+                <img src={item} />
+              </div>
+            ))
+          }
+        </div>
+      </SliderWrapper>
+    </Box>
+  );
+
   return (
     <div>
         {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
@@ -174,48 +344,7 @@ export default function FullDrawerSlider(props) {
           onClose={toggleDrawer("bottom", false)}
           onOpen={toggleDrawer("bottom", true)}
         >
-          <SliderWrapper>
-            <div className="navigation-wrapper">
-              <div ref={sliderRef} className="keen-slider main-slide">
-                {
-                  data?.image?.map((item, index) => (
-                    <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
-                      <img src={item} />
-                    </div>
-                  ))
-                }
-              </div>
-              {loaded && instanceRef.current && (
-                <>
-                  <Arrow
-                    left
-                    onClick={(e) =>
-                      e.stopPropagation() || instanceRef.current?.prev()
-                    }
-                    disabled={currentSlide === 0}
-                  />
-                  <Arrow
-                    onClick={(e) =>
-                      e.stopPropagation() || instanceRef.current?.next()
-                    }
-                    disabled={
-                      currentSlide ===
-                      instanceRef.current.track.details.slides.length - 1
-                    }
-                  />
-                </>
-              )}
-            </div>
-            <div ref={thumbnailRef} className="keen-slider thumbnail">
-              {
-                data?.image?.map((item, index) => (
-                  <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
-                    <img src={item} />
-                  </div>
-                ))
-              }
-            </div>
-          </SliderWrapper>
+          {list()}
         </SwipeableDrawer>
     </div>
   )
