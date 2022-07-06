@@ -114,15 +114,14 @@ export default function OverviewDetail(props) {
     chapter: null,
   });
 
-  const toggleDrawer = (anchor, open, id) => (event) => {
-    console.log(anchor, open)
-    if (
-      event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
-    }
+  const toggleDrawer = (anchor, open, id) => {
+    // if (
+    //   event &&
+    //   event.type === 'keydown' &&
+    //   (event.key === 'Tab' || event.key === 'Shift')
+    // ) {
+    //   return;
+    // }
 
     setStateOpen({ ...stateOpen, [anchor]: open, chapter: id });
   };

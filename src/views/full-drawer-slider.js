@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import DetailSlider from 'src/views/detail-slick-slider';
 import {
   Dialog,
@@ -19,13 +19,19 @@ import {
   ListItemButton,
   ListItemIcon,
   styled,
+  SpeedDial,
+  SpeedDialAction,
 } from '@mui/material'
 import {
-  Close, Inbox, Mail,
+  Close, Coffee, Facebook, FileCopy, Inbox, Mail, Share, SkipNext,
 } from '@mui/icons-material';
 import DetailSwiper from './detail-swiper-slider';
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
+import { isMobile } from 'react-device-detect';
+import { detail } from "store/actions"
+import Link from 'next/link';
+import theme from 'src/themes/theme';
 
 const SliderWrapper = styled('div')(({ theme }) => ({
   '.main-slide': {
@@ -42,7 +48,71 @@ const SliderWrapper = styled('div')(({ theme }) => ({
         objectFit: 'contain',
         maxWidth: '1144px !important',
       }
-    }
+    },
+    '.img-wrap': {
+      position: 'relative', 
+      width: '100%',
+      maxWidth: '1144px',
+      margin: '0 auto',
+      textAlign: 'center',
+      '.coffee-wrap': {
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',   
+        '.coffee': {
+          background: theme.palette.primary.main,
+          width: '100%',
+          margin: '0 auto',
+          textAlign: 'center',
+          maxWidth: '620px',
+          minHeight: '460px',
+          padding: '64px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '8px',
+          [theme.breakpoints.down('sm')]: {
+            maxWidth: '312px',
+            minHeight: '336px',
+            padding: '24px',
+          },            
+          '.smile-icon': {
+            width: '64px',
+            height: '64px',
+            marginBottom: '24px',
+            [theme.breakpoints.down('sm')]: {
+              width: '48px',
+              height: '48px',
+              marginBottom: '16px',
+            },
+          },
+          '.desc': {
+            color: '#FFF',
+            marginBottom: '24px',
+            [theme.breakpoints.down('sm')]: {
+              marginBottom: '16px',
+            },
+          },
+          '.btn-wrap': {
+            display: 'flex',
+            flexDirection: 'column',
+            'a': {
+              marginBottom: '12px',
+              '&:last-child': {
+                marginBottom: '0'
+              },
+              [theme.breakpoints.down('sm')]: {
+                marginBottom: '12px',
+                '&:last-child': {
+                  marginBottom: '0'
+                },
+              },
+            }
+          }
+        },
+      },
+    },
   },
   '.thumbnail': {
     height: '72px',
@@ -50,12 +120,22 @@ const SliderWrapper = styled('div')(({ theme }) => ({
     position: 'absolute !important',
     bottom: '0',
     left: '0',
+    [theme.breakpoints.down('sm')]: {
+      height: '38px',
+    },
     '.keen-slider__slide': {
-      cursor: 'pointer',
+      opacity: '0.4',
+      transition: 'all 0.3s',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+      '&.active': {
+        opacity: '1',
+      },
       '& img': {
-        width: '100%',
         height: '100%',
         objectFit: 'cover',
+        width: '100%',
       }
     }
   },
@@ -63,21 +143,24 @@ const SliderWrapper = styled('div')(({ theme }) => ({
     position: "relative",
   },
   '.arrow': {
-    width: '30px',
-    height: '30px',
+    width: '12px',
+    height: '12px',
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
     fill: '#fff',
     cursor: 'pointer',
     WebkitTransform: 'translateY(-50%)',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   '.arrow--left': {
-    left: '5px',
+    left: '40px',
   },
   '.arrow--right': {
     left: 'auto',
-    right: '5px',
+    right: '40px',
   },
   '.arrow--disabled': {
     fill: 'rgba(255, 255, 255, 0.5)',
@@ -87,31 +170,31 @@ const SliderWrapper = styled('div')(({ theme }) => ({
 function ThumbnailPlugin(mainRef) {
   return (slider) => {
     function removeActive() {
-      slider.slides.forEach((slide) => {
-        slide.classList.remove("active")
+      slider?.slides?.forEach((slide) => {
+        slide?.classList?.remove("active")
       })
     }
     function addActive(idx) {
-      slider.slides[idx].classList.add("active")
+      slider?.slides[idx]?.classList?.add("active")
     }
 
     function addClickEvents() {
-      slider.slides.forEach((slide, idx) => {
-        slide.addEventListener("click", () => {
-          if (mainRef.current) mainRef.current.moveToIdx(idx)
+      slider?.slides?.forEach((slide, idx) => {
+        slide?.addEventListener("click", () => {
+          if (mainRef?.current) mainRef?.current?.moveToIdx(idx)
         })
       })
     }
 
-    slider.on("created", () => {
-      if (!mainRef.current) return
-      addActive(slider.track.details.rel)
+    slider?.on("created", () => {
+      if (!mainRef?.current) return
+      addActive(slider?.track?.details?.rel)
       addClickEvents()
-      mainRef.current.on("animationStarted", (main) => {
+      mainRef?.current?.on("animationStarted", (main) => {
         removeActive()
-        const next = main.animator.targetIdx || 0
-        addActive(main.track.absToRel(next))
-        slider.moveToIdx(next)
+        const next = main?.animator?.targetIdx || 0
+        addActive(main?.track?.absToRel(next))
+        slider?.moveToIdx(next)
       })
     })
   }
@@ -127,6 +210,7 @@ function Arrow(props) {
       } ${disabeld}`}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
+      style={{background: disabeld ? 'rgba(0, 0, 0, .5)' : 'rgba(0, 0, 0, 1)', width: '40px', height: '40px', borderRadius: '50%', padding: '14px'}}
     >
       {props.left && (
         <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
@@ -140,8 +224,14 @@ function Arrow(props) {
 
 export default function FullDrawerSlider(props) {
   const { data, handleClose, state, detail_data, handleClickOpen, stateOpen, toggleDrawer } = props;
+  const dispatch = useDispatch();
   const { hide_action } = useSelector(state => state.detail);
-  console.log('data', data)
+  // hide all action example arrow and thumbnail 
+  const handleHideAction = () => {
+    hide_action ?
+    dispatch(detail.setHideAction('HIDE_ACTION', false)) :
+    dispatch(detail.setHideAction('HIDE_ACTION', true))
+  }
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
@@ -159,21 +249,41 @@ export default function FullDrawerSlider(props) {
     {
       initial: 0,
       slides: {
-        perView: 10,
-        spacing: 10,
+        perView: isMobile ? 8 : 10,
+        spacing: 5,
       },
     },
     [ThumbnailPlugin(instanceRef)]
   )
 
-  // toggleDrawer to false on scroll up and scroll down
+  // get next chapter index if exist
+  const [nextChapterIndex, setNextChapterIndex] = useState(null)
+  const [nextChapterId, setNextChapterId] = useState(null)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener('scroll', () => {
-        toggleDrawer("bottom", false)
-      })
+    let next_chapter_index = 0
+    detail_data?.chapters?.map((item, index) => {
+      if (item?.id === data?.id) {
+        next_chapter_index = index + 1
+      }
+    })
+    if (next_chapter_index === detail_data?.chapters?.length) {
+      next_chapter_index = 0
     }
-  }, [toggleDrawer])
+    setNextChapterIndex(next_chapter_index)
+    // get id of next chapter base on next_chapter_index
+    let next_chapter_id = detail_data?.chapters?.[next_chapter_index]?.id
+    setNextChapterId(next_chapter_id)
+  }, [detail_data, data])
+
+  // handle next chapter
+  const handleNextChapter = async () => {
+    // close current chapter and then set time out 1s before open next chapter
+    await toggleDrawer("bottom", false, null)
+    setTimeout(async () => {
+      await toggleDrawer("bottom", true, nextChapterId)
+      dispatch(detail.setHideAction('HIDE_ACTION', false))
+    }, 1000)
+  }
 
   const list = () => (
     <Box
@@ -218,7 +328,7 @@ export default function FullDrawerSlider(props) {
             }
           }}
         >
-          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}} onClick={toggleDrawer("bottom", false)}>
+          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}} onClick={() => toggleDrawer("bottom", false)}>
             <IconButton
               edge="start"
               color="inherit"
@@ -274,11 +384,12 @@ export default function FullDrawerSlider(props) {
               width: "150px",
               overflow: "hidden",
               textOverflow: "ellipsis", 
+              textAlign: "center",
             }} 
             variant="h5" 
             component="h2"
           >
-            Title Title
+            Chapter 1
           </Typography>
           <Typography 
             sx={{ 
@@ -288,27 +399,96 @@ export default function FullDrawerSlider(props) {
               width: "150px",
               overflow: "hidden",
               textOverflow: "ellipsis", 
+              textAlign: "center",
             }} 
             variant="caption" 
             component="p"
           >
-            Subtitle Subtitle
+            First Contact
           </Typography>
         </Box>
       </Box>
       <SliderWrapper>
         <div className="navigation-wrapper">
-          <div ref={sliderRef} className="keen-slider main-slide">
+          <div ref={sliderRef} className="keen-slider main-slide" onClick={() => handleHideAction()}>
             {
               data?.image?.map((item, index) => (
                 <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
-                  <img src={item} />
+                  <img src={item} alt="slide" />
                 </div>
               ))
             }
+            <div className={`keen-slider__slide`}>
+              <div className='img-wrap'>
+                <div className='coffee-wrap'>
+                  <div className='coffee'>
+                    <img className='smile-icon' src="/smile.svg" alt="smile icon"/>
+                    <Typography variant='h4' component='h4' sx={{color: '#FFF', mb: 3}}>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</Typography>
+                    {/* <p className='desc'>ဒီ Comic လေးဖတ်ရတာကြိုက်ရဲ့လား?</p> */}
+                    <div className='btn-wrap'>
+                      <Link href={`/coffee`} passHref>
+                        <Button 
+                          variant="contained" 
+                          color="light" 
+                          sx={{
+                            color: theme.palette.secondary.main, 
+                            width: 'fit-content',
+                          }} 
+                          size="large"
+                          component="a"
+                          startIcon={<Coffee />}
+                        >
+                          Coffee ဖိုးပေးမယ်
+                        </Button>
+                      </Link>
+                      <Box sx={{transform: 'translateZ(0px)', flexGrow: 1, minHeight: {md: '52px', xs: '44px'}}}>
+                        <SpeedDial
+                          ariaLabel="SpeedDial basic example"
+                          sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%'}}
+                          icon={<Share />}
+                          className="speed-dial-white"
+                        >
+                          <SpeedDialAction
+                            icon={<FileCopy />}
+                            onClick={() => handleCopy()}
+                            key="Copy Link"
+                            tooltipTitle="Copy Link"
+                            tooltipOpen
+                          />
+                          <SpeedDialAction
+                            icon={<Facebook />}
+                            onClick={() => console.log('You clicked Share')}
+                            key="Facebook"
+                            tooltipTitle="Facebook"
+                            tooltipOpen
+                          />
+                        </SpeedDial>
+                      </Box>
+                      {
+                        nextChapterIndex !== null &&
+                        nextChapterIndex > 0 &&
+                        // <Link href={`/detail/chapter/${nextChapterSlug}`} passHref>
+                          <Button 
+                            variant='outlined' 
+                            className='outlined-white' 
+                            size="large" 
+                            fullWidth
+                            startIcon={<SkipNext />}
+                            // onClick toggle drawer false and settimeout to 1000 and toggle drawer true
+                            onClick={() => handleNextChapter()}
+                          >
+                            နောက်တစ်ပိုင်း
+                          </Button>
+                        // </Link>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           {loaded && instanceRef.current && (
-            <>
+            <div style={{opacity: hide_action ? '0' : '1',}}>
               <Arrow
                 left
                 onClick={(e) =>
@@ -325,10 +505,10 @@ export default function FullDrawerSlider(props) {
                   instanceRef.current.track.details.slides.length - 1
                 }
               />
-            </>
+            </div>
           )}
         </div>
-        <div ref={thumbnailRef} className="keen-slider thumbnail">
+        <div ref={thumbnailRef} className="keen-slider thumbnail" style={{opacity: hide_action ? '0' : '1',}}>
           {
             data?.image?.map((item, index) => (
               <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
@@ -347,8 +527,9 @@ export default function FullDrawerSlider(props) {
         <SwipeableDrawer
           anchor={"bottom"}
           open={stateOpen["bottom"]}
-          onClose={toggleDrawer("bottom", false)}
-          onOpen={toggleDrawer("bottom", true)}
+          onClose={() => toggleDrawer("bottom", false)}
+          onOpen={() => toggleDrawer("bottom", true)}
+          transitionDuration={{ appear: 100, enter: 100, exit: 100 }}
         >
           {list()}
         </SwipeableDrawer>

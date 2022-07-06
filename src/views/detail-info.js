@@ -188,7 +188,7 @@ export default function DetailInfo(props) {
                 <Button 
                   variant="contained" 
                   startIcon={<PlayCircleOutline />}
-                  onClick={toggleDrawer('bottom', true, 1)}
+                  onClick={() => toggleDrawer('bottom', true, 1)}
                 >                      
                   အခုဖတ်မယ်
                 </Button>
@@ -259,7 +259,8 @@ export default function DetailInfo(props) {
             <Button 
               variant="contained" 
               startIcon={<PlayCircleOutline />}
-              onClick={toggleDrawer('bottom', true, 1)}
+              onClick={() => toggleDrawer('bottom', true, 1)}
+              fullWidth
             >                      
               အခုဖတ်မယ်
             </Button>
