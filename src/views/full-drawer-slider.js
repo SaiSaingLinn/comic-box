@@ -293,9 +293,9 @@ export default function FullDrawerSlider(props) {
   const [thumbnailRef] = useKeenSlider(
     {
       initial: 0,
-      dragSpeed: 8,
-      mode: "free",
-      rubberband: true,
+      dragSpeed: 30,
+      // mode: "free",
+      rubberband: false,
       slides: {
         perView: isMobile ? 8 : 10,
         spacing: 5,
