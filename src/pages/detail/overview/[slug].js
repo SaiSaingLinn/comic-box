@@ -122,9 +122,46 @@ export default function OverviewDetail(props) {
     // ) {
     //   return;
     // }
-
     setStateOpen({ ...stateOpen, [anchor]: open, chapter: id });
   };
+
+  // query selector keen slider and set height with window inner height
+  // query select .main-slide
+  const [windowHeight, setWindowHeight] = useState(0);
+  // useEffect(() => {
+  //   if (stateOpen.bottom) {
+  //     if (typeof window !== "undefined") {
+  //       // Client-side-only code
+  //       const mainSlide = document.querySelector('.main-slide');
+  //       setTimeout(() => {
+  //         console.log('mainSlide', mainSlide)
+  //       }, 1000)
+  //     }
+  //   }
+  // }, [stateOpen.bottom]);
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     if (stateOpen.bottom) {    
+  //       // Client-side-only code
+  //       const slider = document.querySelector('.main-slide');
+  //       const windowHeight = window.innerHeight;
+  //       console.log('windowHeight', windowHeight)
+  //       console.log('slider', slider)
+  //       if (slider) {
+  //         console.log('windowHeight', windowHeight)
+  //         slider.style.height = `${windowHeight}px`;
+  //       }
+  //     } else {
+  //       // Client-side-only code
+  //       const slider = document.querySelector('.main-slide');
+  //       if (slider) {
+  //         slider.style.height = `100vh`;
+  //       }
+  //     }
+  //   }
+  // }, [stateOpen.bottom])
+  // console.log('stateOpen', stateOpen.bottom)
 
   useEffect(() => {
     let id = stateOpen.chapter; 

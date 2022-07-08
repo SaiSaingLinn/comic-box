@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import DetailSlider from 'src/views/detail-slick-slider';
 import {
@@ -35,16 +35,17 @@ import theme from 'src/themes/theme';
 
 const SliderWrapper = styled('div')(({ theme }) => ({
   '.main-slide': {
+    height: '100vh',
     '.keen-slider__slide': {
       // maxWidth: '1144px !important',
       // minWidth: '100% !important',
-      height: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      transition: "transform .1s linear",
       '& img': {
         width: '100%',
-        height: '100vh',
+        height: '100%',
         objectFit: 'contain',
         maxWidth: '1144px !important',
       }
@@ -120,7 +121,7 @@ const SliderWrapper = styled('div')(({ theme }) => ({
     position: 'absolute !important',
     bottom: '0',
     left: '0',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       height: '38px',
     },
     '.keen-slider__slide': {
@@ -235,19 +236,66 @@ export default function FullDrawerSlider(props) {
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
+  const [opacities, setOpacities] = useState([])
+  
+  useEffect(() => {
+    stateOpen.bottom && setCurrentSlide(0)
+  }, [stateOpen])
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
+    // mode: 'free-snap',
+    renderMode: 'performance',
+    rubberband: false,
+    defaultAnimation: {
+      duration: 500,
+    },
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel)
+      // console.log('slide changed', slider)
+      // const new_opacities = slider.track.details.slides.map((slide) => slide.portion)
+      // setOpacities(new_opacities)
+    },
+    detailsChanged(s) {
+      const new_opacities = s.track.details.slides.map((slide) => slide.portion)
+      setOpacities(new_opacities)
     },
     created() {
       setLoaded(true)
+      // if (typeof window !== "undefined") {
+      //   // Client-side-only code
+      //   const mainSlide = document.querySelector('.main-slide');
+      //   const windowHeight = window.innerHeight;
+      //   mainSlide.style.height = `${windowHeight}px`;
+      // }
+      // for get window inner height 
+      if (typeof window !== "undefined") {
+        const mainSlide = document.querySelector('.main-slide');
+        const windowHeight = window.innerHeight;
+        mainSlide.style.height = `${windowHeight}px`;
+
+        // detect if screen was rotate
+        const supportsOrientationChange = "onorientationchange" in window,
+          orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+        
+        window.addEventListener(orientationEvent, function() {
+          // console.log(window.orientation + " " + screen.width+ " " + this.innerHeight + " " + screen.height);
+          if (window.orientation === 0) {
+            mainSlide.style.height = `${windowHeight}px`;
+          } else {
+            // console.log('screen.height', screen.height)
+            mainSlide.style.height = `${screen.height}px`;
+          }
+        }, false);
+      }
     },
   })
 
   const [thumbnailRef] = useKeenSlider(
     {
       initial: 0,
+      dragSpeed: 4,
+      mode: "free",
+      rubberband: false,
       slides: {
         perView: isMobile ? 8 : 10,
         spacing: 5,
@@ -282,19 +330,19 @@ export default function FullDrawerSlider(props) {
     setTimeout(async () => {
       await toggleDrawer("bottom", true, nextChapterId)
       dispatch(detail.setHideAction('HIDE_ACTION', false))
-    }, 1000)
+    }, 300)
   }
 
   const list = () => (
     <Box
       sx={{ 
         width: 'auto', 
-        height: "100vh",
         padding: "0",
         margin: "0",
         overflow: "hidden"
       }}
       role="presentation"
+      className="keen-wrapper"
       // onClick={toggleDrawer("bottom", false)}
       // onKeyDown={toggleDrawer("bottom", false)}
     >
@@ -413,7 +461,14 @@ export default function FullDrawerSlider(props) {
           <div ref={sliderRef} className="keen-slider main-slide" onClick={() => handleHideAction()}>
             {
               data?.image?.map((item, index) => (
-                <div className={`keen-slider__slide number-slide${index + 1}`} key={index}>
+                <div 
+                  className={`keen-slider__slide number-slide${index + 1}`}
+                  key={index} 
+                  style={{
+                    opacity: opacities[index],
+                    visibility: opacities[index] === 0 ? 'hidden' : 'visible',
+                  }}
+                >
                   <img src={item} alt="slide" />
                 </div>
               ))
@@ -529,7 +584,11 @@ export default function FullDrawerSlider(props) {
           open={stateOpen["bottom"]}
           onClose={() => toggleDrawer("bottom", false)}
           onOpen={() => toggleDrawer("bottom", true)}
-          transitionDuration={{ appear: 100, enter: 100, exit: 100 }}
+          transitionDuration={{ appear: 10, enter: 10, exit: 10 }}
+          minFlingVelocity={1000}
+          swipeAreaWidth={200}
+          disableBackdropTransition={true}
+          disableSwipeToOpen={true}
         >
           {list()}
         </SwipeableDrawer>
