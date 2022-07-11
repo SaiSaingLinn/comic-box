@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, cloneElement } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import Slider from 'react-slick'
 import { styled } from '@mui/material/styles';
@@ -34,8 +34,9 @@ import "swiper/css/lazy";
 import "swiper/css/zoom";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
+import 'swiper/css/effect-fade';
 // import Swiper core and required modules
-import { Navigation, Pagination, Lazy, Zoom, Thumbs, FreeMode } from 'swiper';
+import { Navigation, Pagination, Lazy, Zoom, Thumbs, FreeMode, EffectFade } from 'swiper';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
 
@@ -173,6 +174,15 @@ const Container = styled('div')(({ theme }) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+      },
+    },
+    '&.swiper-fade': {
+      '.swiper-wrapper': {
+        '.swiper-slide': {
+          '&:not(.swiper-slide-active)': {
+            opacity: '0 !important',
+          },
+        },
       },
     },
     '.img-wrap': {
@@ -496,7 +506,13 @@ export default function ChapterDetail() {
             </Box>
           </Box>
           <Swiper
-            modules={[Navigation, Pagination, Zoom, Lazy, FreeMode, Thumbs]}
+            modules={[Navigation, Pagination, Zoom, Lazy, FreeMode, Thumbs, EffectFade]}
+            effect="fade"
+            fadeEffect={
+              {
+                crossFade: false
+              }
+            }
             navigation={hide_action ? false : true}
             pagination={
               hide_action ? false : {
@@ -510,7 +526,8 @@ export default function ChapterDetail() {
               onUpdate && swiper.slideTo(0, 1, true) && dispatch(detail.setHideAction('HIDE_ACTION', false))
               setOnUpdate(false)
             }}
-            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+            thumbs={{ swiper: thumbsSwiper !== null && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+            speed={200}
           >          
             {
               // filter chapter by id
