@@ -373,6 +373,7 @@ export default function ChapterDetail() {
           height: -webkit-fill-available;
           height: fill-available;
           height: stretch;
+          background-color: #000;
         `;
       } else {
         document.body.style.cssText = `
@@ -520,7 +521,7 @@ export default function ChapterDetail() {
             }}
             spaceBetween={50}
             slidesPerView={1}
-            zoom={true}
+            zoom={false}
             lazy={false}
             onUpdate={(swiper) => {
               onUpdate && swiper.slideTo(0, 1, true) && dispatch(detail.setHideAction('HIDE_ACTION', false))
